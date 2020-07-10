@@ -1,27 +1,39 @@
 <template>
-<div class="home">
-  <div class="home-left">
-    <span class="home-left-label">{{homeLabel}}</span>
-    <md-button class="md-icon-button" @click="addDialog">
-      <md-icon>add</md-icon>
-    </md-button>
-  </div>
-  <div class="home-right"></div>
-</div>
+<md-app>
+  <md-app-drawer class="navigator" md-permanent="full">
+    <md-toolbar class="md-transparent" md-elevation="0">
+      <span class="home-left-label">{{homeLabel}}</span>
+      <md-button class="md-icon-button" @click="addCategory">
+        <md-icon>add</md-icon>
+      </md-button>
+    </md-toolbar>
+    <md-list>
+
+    </md-list>
+    <home-add ref="home-add-dialog" />
+  </md-app-drawer>
+</md-app>
 </template>
 <script>
+import HomeAdd from '@/views/home/components/add.vue' 
 export default {
   name: 'Home',
+  components: { HomeAdd },
   data() {
     return {
       homeLabel: '分类',
-      homeOperate: 'dialog'
+      showDialog: false,
+      add_category: {
+        title: '创建一个合集'
+      }
     }
   },
   mounted() {},
   methods: {
-    addDialog() {
+    // 新增
+    addCategory() {
       console.log('弹窗')
+      this.$refs['home-add-dialog'].openDialog()
     }
   }
 }

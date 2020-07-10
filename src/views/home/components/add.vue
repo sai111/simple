@@ -1,17 +1,28 @@
 <template>
-<div class="home-add-dialog">
-  <md-dialog>
-    
+  <md-dialog
+    class="home-add-dialog"
+    :md-active.sync="showDialog"
+    :md-modal="false"
+    :md-click-outside-to-close="false">
+    <md-dialog-title>Preferences</md-dialog-title>
   </md-dialog>
-</div>
 </template>
 <script>
 export default {
-  name: 'homeAdd',
+  name: 'HomeAdd',
   data() {
-    return {}
+    return {
+      showDialog: false
+    }
   },
   mounted() {},
-  methods: {}
+  methods: {
+    openDialog() {
+      this.showDialog = true
+    },
+    close() {
+      this.showDialog = false
+    }
+  }
 }
 </script>
