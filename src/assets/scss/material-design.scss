@@ -1,0 +1,9 @@
+:root {
+  --md-theme-default-primary: #fff;
+}
+
+.md-dialog.home-add-dialog {
+  .md-dialog-container {
+    background: var(--md-theme-default-primary)!important;
+  }
+}

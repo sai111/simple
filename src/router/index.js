@@ -14,6 +14,12 @@ export const baseRouter = [
     to: '/views/piece/index',
     component: () => import('@/views/piece/index'),
     meta: {title: '知识碎片', icon: ''}
+  },
+  {
+    path: '/house',
+    to: '/views/house/index',
+    component: () => import('@/views/house/index.vue'),
+    meta: {title: '房屋信息', icon: ''}
   }
 ]
 
