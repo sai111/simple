@@ -1,6 +1,6 @@
 <template>
 <md-app>
-  <md-app-drawer class="navigator" md-permanent="full">
+  <md-app-drawer class="navigator" md-permanent="full" style="width:240px">
     <md-toolbar class="md-transparent" md-elevation="0">
       <span class="home-left-label">{{homeLabel}}</span>
       <md-button class="md-icon-button" @click="addCategory">
@@ -8,7 +8,7 @@
       </md-button>
     </md-toolbar>
     <md-list>
-
+      <list-item></list-item>
     </md-list>
     <home-add ref="home-add-dialog" />
   </md-app-drawer>
@@ -16,15 +16,17 @@
 </template>
 <script>
 import HomeAdd from '@/views/home/components/add.vue' 
+import listItem from '@/views/home/components/list-item.vue'
 export default {
   name: 'Home',
-  components: { HomeAdd },
+  components: { HomeAdd, listItem },
   data() {
     return {
       homeLabel: '分类',
       showDialog: false,
       add_category: {
-        title: '创建一个合集'
+        title: '创建一个合集',
+        form: {}
       }
     }
   },
@@ -33,25 +35,28 @@ export default {
     // 新增
     addCategory() {
       console.log('弹窗')
-      this.$refs['home-add-dialog'].openDialog()
-    }
+      let addForm = {
+        name: '',
+        title: '',
+        desc: '',
+        en: '',
+        tag: ''
+      }
+      this.$refs['home-add-dialog'].activateForm('创建一个合集', addForm)
+    },
+    editCategory() {}
   }
 }
 </script>
 <style lang="scss" scoped>
-.home {
+.md-app {
   width: 100%;
   height: 100%;
-  display: flex;
-  &-left {
-    width: 100px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .md-drawer {
+    height: 100%;
+    width: 240px;
   }
-  &-right {
-    flex: 1 1 1%;
+  .md-app-container {
     height: 100%;
   }
 }

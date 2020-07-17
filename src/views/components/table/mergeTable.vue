@@ -24,7 +24,8 @@
                <div v-else  class="td-right">
                  <tr
                   v-for="(trChild, trChildIndex) in tr"
-                  :key="'tr-child-key-'+trChildIndex">
+                  :key="'tr-child-key-'+trChildIndex"
+                  :style="{color: trChild.priceColor}">
                    <td>{{trChild[td.field]||'--'}}</td>
                  </tr>
                </div>

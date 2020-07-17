@@ -2,21 +2,22 @@
   <div class="custom-table">
     <div class="custom-table-thead">
       <div class="custom-table-thead-li"
-        v-for="(thead, theadIndex) in columns"
-        :key="'thead-li-'+theadIndex"
-        :style="{width: thead.width}">
-        {{ thead.name }}
+        v-for="(td, tdIndex) in table.columns"
+        :key="'thead-li-'+tdIndex"
+        :style="{width: td.width}">
+        {{ td.name }}
       </div>
     </div>
     <div class="custom-table-tbody">
       <div class="custom-table-tbody-li"
-        v-for="(tbody, tbodyIndex) in row"
-        :key="'tbody-li-'+tbodyIndex">
+        v-for="(tr, trIndex) in table.row"
+        :key="'tbody-li-'+trIndex"
+        :style="{color: tr.priceColor}">
         <div class="custom-table-tbody-li-column"
-          v-for="(thead, theadIndex) in columns"
-          :key="'thead-li-'+theadIndex"
-          :style="{width: thead.width}">
-            {{ tbody[thead.field] || '--' }}
+          v-for="(td, tdIndex) in table.columns"
+          :key="'thead-li-'+tdIndex"
+          :style="{width: td.width}">
+            {{ tr[td.field] || '--' }}
         </div>
       </div>
     </div>
@@ -34,22 +35,6 @@ export default {
           row: []
         }
       }
-    }
-  },
-  data() {
-    return {
-      columns: [],
-      row: [],
-      colors: null
-    }
-  },
-  mounted() {
-    this.initTable()
-  },
-  methods: {
-    initTable () {
-      this.columns = this.table.columns
-      this.row = this.table.row
     }
   }
 }
@@ -69,7 +54,7 @@ export default {
       height: 100%;
       line-height: 50px;
       border-left: 1px solid #000;
-      padding: 0 20px;
+      padding: 0 10px;
       box-sizing: border-box;
       &:last-child {
         border-right: 1px solid #000;
@@ -85,7 +70,7 @@ export default {
       &-column {
         line-height: 25px;
         border-left: 1px solid #000;
-        padding: 0 20px;
+        padding: 0 10px;
         box-sizing: border-box;
         &:last-child {
           border-right: 1px solid #000;
