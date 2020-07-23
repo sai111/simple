@@ -4,11 +4,12 @@
   class="piece"
 >
   <div class="piece-background"></div>
+  11111
 </div>
 </template>
 <script>
 export default {
-  name: 'Piece',
+  name: 'LayoutPiece',
   data() {
     return {}
   },

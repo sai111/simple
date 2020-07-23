@@ -4,7 +4,7 @@ Vue.use(Router)
 
 export const baseRouter = [
   {
-    path: '/home',
+    path: '/',
     to: '/views/home/index',
     component: () => import('@/views/home/index'),
     meta: {title: '首页', icon: ''}

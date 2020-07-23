@@ -12,14 +12,18 @@
     </md-list>
     <home-add ref="home-add-dialog" />
   </md-app-drawer>
+  <md-app-content>
+    <piece-list></piece-list>
+  </md-app-content>
 </md-app>
 </template>
 <script>
 import HomeAdd from '@/views/home/components/add.vue' 
 import listItem from '@/views/home/components/list-item.vue'
+import PieceList from '@/views/home/components/piece-list.vue'
 export default {
   name: 'Home',
-  components: { HomeAdd, listItem },
+  components: { HomeAdd, listItem, PieceList },
   data() {
     return {
       homeLabel: '分类',
@@ -42,7 +46,7 @@ export default {
         en: '',
         tag: ''
       }
-      this.$refs['home-add-dialog'].activateForm('创建一个合集', addForm)
+      this.$refs['home-add-dialog'].activateForm('创建一个合集', addForm, 'categoty')
     },
     editCategory() {}
   }

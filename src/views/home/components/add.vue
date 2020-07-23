@@ -5,48 +5,60 @@
     :md-click-outside-to-close="false"
   >
     <md-dialog-title>{{title}}</md-dialog-title>
-    <md-card-content>
-      <md-field :class="getValidationClass('en')">
-        <label>英文分类名</label>
-        <md-input v-model="form.en" :disabled="sending" />
-        <span
-          class="md-error"
-          v-if="!$v.form.en.required">
-          为分类添加一个英文名
-        </span>
-        <span
-          class="md-error"
-          v-if="$v.form.en.required && !$v.form.en.correctEnglishName">
-          作品的英文名由大小写英文字母、数字、下划线组成
-        </span>
-      </md-field>
-      <md-field>
-        <label>中文标题</label>
-        <md-input v-model="form.name" :disabled="sending" />
-        <span
-          class="md-error"
-          v-if="!$v.form.name.required">
-          为分类添加一个中文标题
-        </span>
-        <span
-          class="md-error"
-          v-if="$v.form.name.required && !$v.form.name.minLength">
-          中文标题长度最小3个字符
-        </span>
-      </md-field>
-      <md-field>
-        <label>描述</label>
-        <md-input v-model="form.desc" :disabled="sending" />
-      </md-field>
-      <md-field>
-        <label>标签(以逗号隔开)</label>
-        <md-input v-model="form.tag" :disabled="sending" />
-      </md-field>
-    </md-card-content>
-    <md-dialog-actions>
-      <md-button class="md-primary" @click="close()">关闭</md-button>
-      <md-button class="md-primary" @click="save()">保存</md-button>
-    </md-dialog-actions>
+    <form novalidate class="md-layout" @submit.prevent="validateUser">
+      <md-card-content>
+        <md-field :class="getValidationClass('en')">
+          <label>英文分类名</label>
+          <md-input v-model="form.en" :disabled="sending" />
+          <span
+            class="md-error"
+            v-if="!$v.form.en.required">
+            为分类添加一个英文名
+          </span>
+          <span
+            class="md-error"
+            v-if="$v.form.en.required && !$v.form.en.correctEnglishName">
+            作品的英文名由大小写英文字母、数字、下划线组成
+          </span>
+        </md-field>
+        <md-field :class="getValidationClass('name')">
+          <label>中文标题</label>
+          <md-input v-model="form.name" :disabled="sending" />
+          <span
+            class="md-error"
+            v-if="!$v.form.name.required">
+            为分类添加一个中文标题
+          </span>
+          <span
+            class="md-error"
+            v-if="$v.form.name.required && !$v.form.name.minLength">
+            中文标题长度最小3个字符
+          </span>
+        </md-field>
+        <md-field :class="getValidationClass('desc')">
+          <label>描述</label>
+          <md-input v-model="form.desc" :disabled="sending" />
+          <span
+            class="md-error"
+            v-if="$v.form.desc.required">
+            为分类添加描述信息
+          </span>
+        </md-field>
+        <md-field :class="getValidationClass('tag')">
+          <label>标签(以逗号隔开)</label>
+          <md-input v-model="form.tag" :disabled="sending" />
+          <span
+            class="md-error"
+            v-if="$v.form.tag.required">
+            为分类添加标签信息
+          </span>
+        </md-field>
+      </md-card-content>
+       <md-dialog-actions style="width:100%">
+        <md-button class="md-primary" @click="close()">关闭</md-button>
+        <md-button class="md-primary" type="submit">保存</md-button>
+      </md-dialog-actions>
+    </form>
   </md-dialog>
 </template>
 <script>
@@ -62,6 +74,7 @@ export default {
     return {
       showDialog: false,
       sending: false,
+      categoryType: null,
       title: '',
       id: '',
       form: {
@@ -81,6 +94,12 @@ export default {
       name: {
         required,
         minLength: minLength(3)
+      },
+      desc: {
+        required
+      },
+      tag: {
+        required
       }
     }
   },
@@ -97,7 +116,14 @@ export default {
     openDialog() {
       this.showDialog = true
     },
-    activateForm(dialogTitle, obj = {}) {
+    /**
+     * activateForm方法
+     * dialogTitle: 弹窗标题
+     * obj: 参数
+     * type: 类型,会当作参数进行传递
+     */
+    activateForm(dialogTitle, obj = {}, type = null) {
+      this.categoryType = type
       this.openDialog()
       this.title = dialogTitle
       for (const k in this.form) {
@@ -117,10 +143,21 @@ export default {
           this.form[k] = ''
         }
       }
-      console.log(this.form, 1111)
+    },
+    validateUser() {
+      this.$v.$touch()
+      if (!this.$v.$invalid) {
+        this.save()
+      }
     },
     save() {
-      console.log(this.form, 1111)
+      this.$http({
+        method: 'POST',
+        url: '/api/collect/add',
+        params: this.form
+      }).then((res) => {
+        console.log(res, 'res==1111')
+      })
     }
   }
 }
@@ -135,6 +172,7 @@ export default {
       padding-right: 30px;
       padding-bottom: 16px;
       padding-top: 8px;
+      width: 100%;
       .md-field{
         margin-bottom: 20px;
       }
