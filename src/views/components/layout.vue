@@ -7,6 +7,7 @@
       <md-button
         class="md-raised"
         v-for="(item, index) in routers"
+        v-show="item.show"
         :key="'md-button-router-'+index">
         <router-link :to="item.path">
           {{item.meta.title}}

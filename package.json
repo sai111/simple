@@ -1,6 +1,7 @@
 {
   "name": "simple",
   "version": "0.1.0",
+  "main": "dist/app.js",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",

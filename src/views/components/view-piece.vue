@@ -9,7 +9,7 @@
 </template>
 <script>
 export default {
-  name: 'LayoutPiece',
+  name: 'ViewPiece',
   data() {
     return {}
   },

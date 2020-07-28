@@ -1,15 +1,26 @@
 <template>
   <div id="app">
-    <layout></layout>
-    <layout-piece></layout-piece>
+    <layout v-if="isLayout"></layout>
+    <view-piece v-else></view-piece>
   </div>
 </template> 
 <script>
 import Layout from '@/views/components/layout.vue'
-import LayoutPiece from'@/views/components/layout.vue'
+import ViewPiece from'@/views/components/view-piece.vue'
 export default {
   name: 'App',
-  components: { Layout, LayoutPiece }
+  components: { Layout, ViewPiece },
+  data() {
+    return {
+      isLayout: true
+    }
+  },
+  watch: {
+    '$route'(to, from) {
+      // console.log(to, from, '路由切换')
+      this.isLayout = to.name === 'ViewPiece' ? false: true
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>

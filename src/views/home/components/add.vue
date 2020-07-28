@@ -7,17 +7,17 @@
     <md-dialog-title>{{title}}</md-dialog-title>
     <form novalidate class="md-layout" @submit.prevent="validateUser">
       <md-card-content>
-        <md-field :class="getValidationClass('en')">
+        <md-field :class="getValidationClass('title')">
           <label>英文分类名</label>
-          <md-input v-model="form.en" :disabled="sending" />
+          <md-input v-model="form.title" :disabled="sending" />
           <span
             class="md-error"
-            v-if="!$v.form.en.required">
+            v-if="!$v.form.title.required">
             为分类添加一个英文名
           </span>
           <span
             class="md-error"
-            v-if="$v.form.en.required && !$v.form.en.correctEnglishName">
+            v-if="$v.form.title.required && !$v.form.title.correctEnglishName">
             作品的英文名由大小写英文字母、数字、下划线组成
           </span>
         </md-field>
@@ -78,7 +78,7 @@ export default {
       title: '',
       id: '',
       form: {
-        en: '',
+        title: '',
         name: '',
         desc: '',
         tag: ''
@@ -87,7 +87,7 @@ export default {
   },
   validations: {
     form: {
-      en: {
+      title: {
         required,
         correctEnglishName
       },
@@ -123,6 +123,7 @@ export default {
      * type: 类型,会当作参数进行传递
      */
     activateForm(dialogTitle, obj = {}, type = null) {
+      console.log(type, 'type')
       this.categoryType = type
       this.openDialog()
       this.title = dialogTitle
@@ -154,9 +155,11 @@ export default {
       this.$http({
         method: 'POST',
         url: '/api/collect/add',
-        params: this.form
+        data: this.form
       }).then((res) => {
-        console.log(res, 'res==1111')
+        this.showDialog = false
+      }).catch((e) => {
+        this.showDialog = false
       })
     }
   }

@@ -1,14 +1,14 @@
 <template>
   <md-list-item class="category-list">
     <div class="category-list-item">
-      <md-button class="category-button">
-        测试
+      <md-button class="category-button" @click="$emit('categoryClick', item)">
+        {{item.title || item.name}}
       </md-button>
       <div class="category-list-group">
-        <md-button class="md-icon-button" @click.native="editCategory('edit')">
+        <md-button class="md-icon-button" @click.native="editCategory('update', item)">
           <md-icon>edit</md-icon>
         </md-button>
-        <md-button class="md-icon-button" @click.native="editCategory('delete')">
+        <md-button class="md-icon-button" @click.native="editCategory('delete', item)">
           <md-icon>delete</md-icon>
         </md-button>
       </div>
@@ -18,14 +18,23 @@
 <script>
 export default {
   name: 'listItem',
-  props: {},
+  props: {
+    item: {
+      type: Object,
+      default: () => {}
+    }
+  },
   data() {
     return {}
   },
   mounted() {},
   methods: {
-    editCategory(str = null) {
-      console.log(str, 111)
+    editCategory(flag = null, item) {
+      let obj = {}
+      obj.type = flag
+      obj.form = item
+      console.log(obj, 'obj==111 ')
+      this.$emit('pieceOperate', obj)
     }
   }
 }

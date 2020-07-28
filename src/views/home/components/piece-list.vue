@@ -15,7 +15,7 @@
         {{ item.title }}
       </div>
       <div class="piece-content-des">
-        {{ item.des }}
+        {{ item.desc }}
       </div>
     </div>
   </div>
@@ -30,6 +30,10 @@ export default {
     list: {
       type: Array,
       default: () => []
+    },
+    pieceType: {
+      type: String,
+      default: ''
     }
   },
   components: { HomeAdd },
@@ -46,10 +50,10 @@ export default {
         en: '',
         tag: ''
       }
-      this.$refs['piece-add-dialog'].activateForm('创建一个作品', addForm)
+      this.$refs['piece-add-dialog'].activateForm('创建一个作品', addForm, this.pieceType)
     },
     openPiece(item, index) {
-      console.log(item, index, '打开片段')
+      this.$router.replace({name: 'ViewPiece', params: item})
     }
   }
 }

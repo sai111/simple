@@ -8,12 +8,18 @@
       </md-button>
     </md-toolbar>
     <md-list>
-      <list-item></list-item>
+      <list-item
+        v-for="(item, index) in categoryList"
+        :key="'category-li-'+index"
+        :item="item"
+        @pieceOperate="updateDelete()"
+        @categoryClick="categoryClick"
+      ></list-item>
     </md-list>
     <home-add ref="home-add-dialog" />
   </md-app-drawer>
   <md-app-content>
-    <piece-list></piece-list>
+    <piece-list :piece-type="pieceType" :list="childList"></piece-list>
   </md-app-content>
 </md-app>
 </template>
@@ -27,28 +33,47 @@ export default {
   data() {
     return {
       homeLabel: '分类',
-      showDialog: false,
-      add_category: {
-        title: '创建一个合集',
-        form: {}
-      }
+      pieceType: '',
+      categoryList: [],
+      childList: [
+        {
+          name: 'css-三角形',
+          title: 'triangle',
+          desc: '三角形代码整理',
+          tag: 'css'
+        }
+      ]
     }
   },
-  mounted() {},
+  mounted() {
+    this.getList()
+  },
   methods: {
+    categoryClick(item) {
+      this.pieceType = item.title || item.name
+    },
     // 新增
     addCategory() {
-      console.log('弹窗')
       let addForm = {
         name: '',
-        title: '',
         desc: '',
-        en: '',
+        title: '',
         tag: ''
       }
-      this.$refs['home-add-dialog'].activateForm('创建一个合集', addForm, 'categoty')
+      this.$refs['home-add-dialog'].activateForm('创建一个合集', addForm)
     },
-    editCategory() {}
+    updateDelete(type, item) {
+      console.log(type, '111111111', item)
+    },
+    getList() {
+      this.$http({
+        method: 'get',
+        url: '/api/collect/list'
+      }).then((res) => {
+        this.categoryList = res.data.data
+        this.pieceType = res.data.data[0].title || res.data.data[0].name
+      })
+    }
   }
 }
 </script>
