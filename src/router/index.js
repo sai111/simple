@@ -11,6 +11,13 @@ export const baseRouter = [
     meta: {title: '首页', icon: ''}
   },
   {
+    path: '/home',
+    to: '/views/home/index',
+    show: false,
+    component: () => import('@/views/home/index'),
+    meta: {title: '首页', icon: ''}
+  },
+  {
     path: '/piece',
     to: '/views/piece/index',
     show: true,

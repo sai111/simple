@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <layout v-if="isLayout"></layout>
-    <view-piece v-else></view-piece>
+    <view-piece v-else :piece-obj="pieceCom"></view-piece>
   </div>
 </template> 
 <script>
@@ -12,12 +12,15 @@ export default {
   components: { Layout, ViewPiece },
   data() {
     return {
-      isLayout: true
+      isLayout: true,
+      pieceCom: null
     }
   },
   watch: {
     '$route'(to, from) {
-      // console.log(to, from, '路由切换')
+      if (to.name === 'ViewPiece') {
+        this.pieceCom = to.params
+      }
       this.isLayout = to.name === 'ViewPiece' ? false: true
     }
   }

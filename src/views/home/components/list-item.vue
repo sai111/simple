@@ -8,7 +8,7 @@
         <md-button class="md-icon-button" @click.native="editCategory('update', item)">
           <md-icon>edit</md-icon>
         </md-button>
-        <md-button class="md-icon-button" @click.native="editCategory('delete', item)">
+        <md-button class="md-icon-button" @click.native="deleteCategory('delete', item)">
           <md-icon>delete</md-icon>
         </md-button>
       </div>
@@ -29,12 +29,11 @@ export default {
   },
   mounted() {},
   methods: {
-    editCategory(flag = null, item) {
-      let obj = {}
-      obj.type = flag
-      obj.form = item
-      console.log(obj, 'obj==111 ')
-      this.$emit('pieceOperate', obj)
+    editCategory(item) {
+      this.$emit('cateEdit', this.item)
+    },
+    deleteCategory(item) {
+      this.$emit('cateDelete', this.item)
     }
   }
 }

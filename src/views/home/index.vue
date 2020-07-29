@@ -12,11 +12,12 @@
         v-for="(item, index) in categoryList"
         :key="'category-li-'+index"
         :item="item"
-        @pieceOperate="updateDelete()"
+        @cateDelete="deleteCate"
+        @cateEdit="editCate"
         @categoryClick="categoryClick"
       ></list-item>
     </md-list>
-    <home-add ref="home-add-dialog" />
+    <home-add ref="home-add-dialog" :is-add="isAdd" @cateAddSuccess="addSuccess" />
   </md-app-drawer>
   <md-app-content>
     <piece-list :piece-type="pieceType" :list="childList"></piece-list>
@@ -34,6 +35,7 @@ export default {
     return {
       homeLabel: '分类',
       pieceType: '',
+      isAdd: false,
       categoryList: [],
       childList: [
         {
@@ -50,10 +52,11 @@ export default {
   },
   methods: {
     categoryClick(item) {
-      this.pieceType = item.title || item.name
+      this.pieceType = item.title
     },
     // 新增
     addCategory() {
+      this.isAdd = true
       let addForm = {
         name: '',
         desc: '',
@@ -62,8 +65,28 @@ export default {
       }
       this.$refs['home-add-dialog'].activateForm('创建一个合集', addForm)
     },
-    updateDelete(type, item) {
-      console.log(type, '111111111', item)
+    addSuccess() {
+      this.getList()
+    },
+    editCate(obj) {
+      this.isAdd = false
+      let addForm = {
+        name: obj.name,
+        desc: obj.desc,
+        title: obj.title,
+        tag: obj.tag
+      }
+      this.$refs['home-add-dialog'].activateForm(`修改${obj.title}合集`, addForm)
+    },
+    deleteCate(obj) {
+      // todo:删除提示
+      this.$http({
+        method: 'POST',
+        url: '/api/collect/delete',
+        data: {_id: obj._id}
+      }).then((res) => {
+        this.getList()
+      })
     },
     getList() {
       this.$http({

@@ -32,7 +32,7 @@
           <span
             class="md-error"
             v-if="$v.form.name.required && !$v.form.name.minLength">
-            中文标题长度最小3个字符
+            中文标题长度最小1个字符
           </span>
         </md-field>
         <md-field :class="getValidationClass('desc')">
@@ -69,6 +69,12 @@ const correctEnglishName = (str) => {
 }
 export default {
   name: 'HomeAdd',
+  props: {
+    isAdd: {
+      type: Boolean,
+      default: false
+    }
+  },
   mixins: [validationMixin],
   data() {
     return {
@@ -93,7 +99,7 @@ export default {
       },
       name: {
         required,
-        minLength: minLength(3)
+        minLength: minLength(1)
       },
       desc: {
         required
@@ -123,7 +129,6 @@ export default {
      * type: 类型,会当作参数进行传递
      */
     activateForm(dialogTitle, obj = {}, type = null) {
-      console.log(type, 'type')
       this.categoryType = type
       this.openDialog()
       this.title = dialogTitle
@@ -154,10 +159,11 @@ export default {
     save() {
       this.$http({
         method: 'POST',
-        url: '/api/collect/add',
+        url: `/api/collect/${this.isAdd ? 'add': 'update'}`,
         data: this.form
       }).then((res) => {
         this.showDialog = false
+        this.$emit('cateAddSuccess')
       }).catch((e) => {
         this.showDialog = false
       })

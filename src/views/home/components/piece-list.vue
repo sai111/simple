@@ -53,7 +53,10 @@ export default {
       this.$refs['piece-add-dialog'].activateForm('创建一个作品', addForm, this.pieceType)
     },
     openPiece(item, index) {
-      this.$router.replace({name: 'ViewPiece', params: item})
+      let obj = {
+        pieceType: this.pieceType
+      }
+      this.$router.replace({name: 'ViewPiece', params: Object.assign({}, obj, item)})
     }
   }
 }

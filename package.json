@@ -6,12 +6,15 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "new:view": "node ./scripts/generateView/index"
   },
   "dependencies": {
     "axios": "^0.19.2",
+    "chalk": "^4.1.0",
     "core-js": "^3.6.5",
     "dayjs": "^1.8.28",
+    "dom-to-image": "^2.6.0",
     "html2canvas": "^1.0.0-rc.5",
     "material-design-icons": "^3.0.1",
     "node-sass": "^4.14.1",

@@ -1721,7 +1721,8 @@ color: var(--md-theme-default-primary-on-background, rgb(0, 173, 253))
   background-color: var(--md-theme-default-primary, rgb(0, 173, 253))
 }
 
-.md-dialog.home-add-dialog {
+.md-dialog.home-add-dialog,
+.md-dialog.view-piece-dialog {
   .md-dialog-container {
     background: var(--md-theme-default-accent)!important;
   }
