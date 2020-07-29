@@ -85,6 +85,7 @@ export default {
         url: '/api/collect/delete',
         data: {_id: obj._id}
       }).then((res) => {
+        console.log(res)
         this.getList()
       })
     },

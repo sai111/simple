@@ -16,7 +16,7 @@
   </div>
   <!-- 主体 -->
   <div class="piece-wrap" ref="piece-comp">
-    <component :is="isComponent" /> 
+    <component :is="temp" /> 
   </div>
   <!-- 展示截图内容 -->
   <md-dialog
@@ -61,7 +61,7 @@ export default {
     }
   },
   computed: {
-    isComponent() {
+    temp() {
       this.pieceTip = this.pieceObj.title + '组件截图'
       let comp = () => import(`@/packages/${this.pieceObj.pieceType}/${this.pieceObj.title}/entry.vue`)
       return comp
@@ -86,7 +86,7 @@ export default {
           break;
       }
     },
-    screenShot(item) {
+    screenShot() {
       let screenEle = this.$refs['piece-comp']
       this.pieceDialog = true
       // 优先使用domtoimage截图
@@ -108,9 +108,9 @@ export default {
         })
       })
     },
-    formatConfig(item) {},
-    openMarkdown(item) {},
-    closePiece(item) {
+    formatConfig() {},
+    openMarkdown() {},
+    closePiece() {
       this.$router.replace('/')
     },
     saveScreen() {},
