@@ -18,6 +18,7 @@
       ></list-item>
     </md-list>
     <home-add ref="home-add-dialog" :is-add="isAdd" @cateAddSuccess="addSuccess" />
+    <dialog-confirm ref="delConfirm" @confirmClick="confirmClick"></dialog-confirm>
   </md-app-drawer>
   <md-app-content>
     <piece-list :piece-type="pieceType" :list="childList"></piece-list>
@@ -28,9 +29,10 @@
 import HomeAdd from '@/views/home/components/add.vue' 
 import listItem from '@/views/home/components/list-item.vue'
 import PieceList from '@/views/home/components/piece-list.vue'
+import DialogConfirm from '@/views/home/components/confirm.vue'
 export default {
   name: 'Home',
-  components: { HomeAdd, listItem, PieceList },
+  components: { HomeAdd, listItem, PieceList, DialogConfirm },
   data() {
     return {
       homeLabel: '分类',
@@ -42,7 +44,15 @@ export default {
           name: 'css-三角形',
           title: 'triangle',
           desc: '三角形代码整理',
-          tag: 'css'
+          tag: 'css',
+          type: 'css'
+        },
+        {
+          name: 'canvas-wordCloud',
+          title: 'wordCloud',
+          desc: '字符云可以将文字根据不同的权重布局为大小、颜色各异的图，支持使用图片作为遮罩',
+          tag: 'canvas',
+          type: 'canvas'
         }
       ]
     }
@@ -52,7 +62,20 @@ export default {
   },
   methods: {
     categoryClick(item) {
-      this.pieceType = item.title
+      this.pieceType = item.type
+    },
+    // 删除确认提醒
+    confirmClick(flag = false, obj = {}) {
+      if (flag) {
+        this.$http({
+          method: 'POST',
+          url: '/api/collect/delete',
+          data: {_id: obj._id}
+        }).then(() => {
+          this.getList()
+          this.$refs.delConfirm.closeDialog()
+        })
+      }
     },
     // 新增
     addCategory() {
@@ -79,15 +102,14 @@ export default {
       this.$refs['home-add-dialog'].activateForm(`修改${obj.title}合集`, addForm)
     },
     deleteCate(obj) {
-      // todo:删除提示
-      this.$http({
-        method: 'POST',
-        url: '/api/collect/delete',
-        data: {_id: obj._id}
-      }).then((res) => {
-        console.log(res)
-        this.getList()
-      })
+      let confirm = {
+        title: '删除提醒',
+        content: '是否删除该合集？',
+        confirmText: '确认',
+        cancelText: '取消'
+      }
+      confirm.form = obj
+      this.$refs.delConfirm.openConfirm(confirm)
     },
     getList() {
       this.$http({
@@ -95,7 +117,7 @@ export default {
         url: '/api/collect/list'
       }).then((res) => {
         this.categoryList = res.data.data
-        this.pieceType = res.data.data[0].title || res.data.data[0].name
+        this.pieceType = res.data.data[0].type || res.data.data[0].type
       })
     }
   }

@@ -63,7 +63,7 @@ export default {
   computed: {
     temp() {
       this.pieceTip = this.pieceObj.title + '组件截图'
-      let comp = () => import(`@/packages/${this.pieceObj.pieceType}/${this.pieceObj.title}/entry.vue`)
+      let comp = () => import(`@/packages/${this.pieceObj.type}/${this.pieceObj.title}/entry.vue`)
       return comp
     }
   },
