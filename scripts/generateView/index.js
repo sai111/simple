@@ -37,6 +37,13 @@ process.stdin.on('data', async chunk => {
     let str = String(chunk).trim().toString()
     let inputArr = str.split('/')
     const inputName = inputArr[1]
+    // 文件夹路径
+    const pagePath = resolve('../../src/packages/', inputArr[0])
+    const hasPagePath = fs.existsSync(pagePath)
+    if (hasPagePath) {
+        log(`${inputArr[0]}文件路由不存在，请先新建文件`)
+        await dotExistDirectoryCreate(pagePath)
+    }
     // Vue页面组件路径
     const componentPath = resolve(`../../src/packages/${inputArr[0]}`, inputName)
     // vue文件

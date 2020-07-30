@@ -6,19 +6,22 @@ module.exports = {
 </template>
 <script>
 export default {
-name: '${compoenntName}',
-props: {},
-data() {
-    return {}
-},
-computed: {},
-watch: {},
-mounted() {},
-methods: {}
+    name: '${compoenntName}',
+    props: {},
+    data() {
+        return {}
+    },
+    computed: {},
+    watch: {},
+    mounted() {},
+    methods: {}
 }
 </script>
 <style lang="scss" scoped>
-.${compoenntName} {}
+.${compoenntName} {
+    width: 100%;
+    height: 100%
+}
 </style>`
     },
     entryTemplate: compoenntName => {
@@ -30,19 +33,22 @@ methods: {}
 <script>
 import ${compoenntName} from './index.vue'
 export default {
-name: '${compoenntName}Entry',
-components: { ${compoenntName} },
-data() {
-    return {}
-},
-computed: {},
-watch: {},
-mounted() {},
-methods: {}
+    name: '${compoenntName}Entry',
+    components: { ${compoenntName} },
+    data() {
+        return {}
+    },
+    computed: {},
+    watch: {},
+    mounted() {},
+    methods: {}
 }
 </script>
 <style lang="scss" scoped>
-.${compoenntName}-entry {}
+.${compoenntName}-entry {
+    width: 100%;
+    height: 100%
+}
 </style>`
     },
     configTemplate: compoenntName => {
