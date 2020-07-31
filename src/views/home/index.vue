@@ -1,13 +1,11 @@
 <template>
-<md-app>
-  <md-app-drawer class="navigator" md-permanent="full" style="width:240px">
-    <md-toolbar class="md-transparent" md-elevation="0">
+<el-container>
+  <el-aside width="200px">
+    <div class="aside-button">
       <span class="home-left-label">{{homeLabel}}</span>
-      <md-button class="md-icon-button" @click="addCategory">
-        <md-icon>add</md-icon>
-      </md-button>
-    </md-toolbar>
-    <md-list>
+      <i class="el-icon-circle-plus"  @click="addCategory" />
+    </div>
+    <div class="aside-list">
       <list-item
         v-for="(item, index) in categoryList"
         :key="'category-li-'+index"
@@ -16,23 +14,21 @@
         @cateEdit="editCate"
         @categoryClick="categoryClick"
       ></list-item>
-    </md-list>
-    <home-add ref="home-add-dialog" :is-add="isAdd" @cateAddSuccess="addSuccess" />
-    <dialog-confirm ref="delConfirm" @confirmClick="confirmClick"></dialog-confirm>
-  </md-app-drawer>
-  <md-app-content>
+    </div>
+  </el-aside>
+  <el-main>
     <piece-list :piece-type="pieceType" :list="childList"></piece-list>
-  </md-app-content>
-</md-app>
+  </el-main>
+  <home-add ref="home-add-dialog" :is-add="isAdd" @cateAddSuccess="addSuccess" />
+</el-container>
 </template>
 <script>
 import HomeAdd from '@/views/home/components/add.vue' 
 import listItem from '@/views/home/components/list-item.vue'
 import PieceList from '@/views/home/components/piece-list.vue'
-import DialogConfirm from '@/views/home/components/confirm.vue'
 export default {
   name: 'Home',
-  components: { HomeAdd, listItem, PieceList, DialogConfirm },
+  components: { HomeAdd, listItem, PieceList },
   data() {
     return {
       homeLabel: '分类',
@@ -64,19 +60,6 @@ export default {
     categoryClick(item) {
       this.pieceType = item.type
     },
-    // 删除确认提醒
-    confirmClick(flag = false, obj = {}) {
-      if (flag) {
-        this.$http({
-          method: 'POST',
-          url: '/api/collect/delete',
-          data: {_id: obj._id}
-        }).then(() => {
-          this.getList()
-          this.$refs.delConfirm.closeDialog()
-        })
-      }
-    },
     // 新增
     addCategory() {
       this.isAdd = true
@@ -102,14 +85,22 @@ export default {
       this.$refs['home-add-dialog'].activateForm(`修改${obj.title}合集`, addForm)
     },
     deleteCate(obj) {
-      let confirm = {
-        title: '删除提醒',
-        content: '是否删除该合集？',
-        confirmText: '确认',
-        cancelText: '取消'
-      }
-      confirm.form = obj
-      this.$refs.delConfirm.openConfirm(confirm)
+      this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$message({message: '删除成功', type: 'success'})
+        this.$http({
+          method: 'POST',
+          url: '/api/collect/delete',
+          data: {_id: obj._id}
+        }).then(() => {
+          this.getList()
+        })
+      }).catch(() => {
+        this.$message('已取消删除')
+      })
     },
     getList() {
       this.$http({

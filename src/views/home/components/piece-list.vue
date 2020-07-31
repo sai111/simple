@@ -1,6 +1,6 @@
 <template>
 <div class="md-layout home-piece-list">
-  <div class="home-piece-list-block md-layout-item md-size-25">
+  <div class="home-piece-list-block md-layout-item">
     <div class="piece-content" @click="addDialog">
       <div class="piece-content-add">+</div>
     </div>
@@ -8,7 +8,7 @@
   <div
     v-for="(item, index) in list"
     :key="'piece-li-'+index"
-    class="home-piece-list-block md-size-25"
+    class="home-piece-list-block"
     @click="openPiece(item, index)">
     <div class="piece-content">
       <div class="piece-content-title">
@@ -65,18 +65,16 @@ export default {
 .home-piece-list {
   width: 100%;
   height: 100%;
+  display: flex;
   &-block {
     position: relative;
     width: 100%;
     transform-style:preserve-3d;
     perspective:800px;
-    &.md-size-25 {
-      min-width: 0;
-      max-width: none;
-      flex-basis: calc(25% - 15px);
-      flex-grow: 0;
-      flex-shrink: 25;
-    }
+    margin-right: 15px;
+    flex-basis: calc(25% - 15px);
+    flex-grow: 0;
+    flex-shrink: 25;
     .piece-content {
       width: 250px;
       height: 150px;

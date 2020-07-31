@@ -62,8 +62,8 @@ export default {
                 color: 'random-light',
                 // backgroundColor: '#333',
                 rotateRatio: -10,
-                // minRotation: -90,
-                // maxRotation: 90,
+                minRotation: -90,
+                maxRotation: 90,
                 drawOutOfBound: false,
                 tooltip: {
                     show: true,

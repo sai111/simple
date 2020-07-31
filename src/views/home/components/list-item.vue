@@ -1,19 +1,15 @@
 <template>
-  <md-list-item class="category-list">
+  <div class="category-list">
     <div class="category-list-item">
-      <md-button class="category-button" @click="$emit('categoryClick', item)">
+      <div class="category-button" @click="$emit('categoryClick', item)">
         {{item.title || item.name}}
-      </md-button>
+      </div>
       <div class="category-list-group">
-        <md-button class="md-icon-button" @click.native="editCategory('update', item)">
-          <md-icon>edit</md-icon>
-        </md-button>
-        <md-button class="md-icon-button" @click.native="deleteCategory('delete', item)">
-          <md-icon>delete</md-icon>
-        </md-button>
+        <i class="el-icon-edit" @click="editCategory('update', item)" />
+        <i class="el-icon-delete" @click="deleteCategory('delete', item)" />
       </div>
     </div>
-  </md-list-item>
+  </div>
 </template>
 <script>
 export default {
@@ -40,36 +36,41 @@ export default {
 </script>
 <style lang="scss" scoped>
 .category-list {
-  height: 36px !important;
-  min-height: 36px!important;
+  height: 36px;
   pointer-events: auto;
   overflow: hidden;
   transition: height 0.2s;
   cursor: pointer;
   &-item {
     width: 100%;
-    .md-button.category-button {
+    .category-button {
       width: 100%;
-      margin: 0 8px!important;
+      white-space: nowrap;
+      cursor: pointer;
+      color: #000;
+      text-align: center;
+      box-sizing: border-box;
+      transition: .1s;
+      font-weight: 500;
+      font-size: 14px;
     }
   }
   &:hover {
-    height: 72px !important;
+    height: 72px;
     .category-list-group {
       opacity: 1;
     }
   }
-  &-group {
+  .category-list-group {
+    width: 100%;
     height: 28px;
     line-height: 28px;
-    margin-bottom: 6px;
     text-align: center;
-    opacity: 1;
+    margin: 0 auto;
+    opacity: 0;
     transition: opacity 0.5s;
-    .md-icon-button {
-      height: 28px!important;
-      min-width: 28px!important;
-      width: 28px!important;
+    i {
+      padding-right: 10px;
     }
   }
 }

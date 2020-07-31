@@ -4,35 +4,35 @@
   class="piece"
 >
   <div class="piece-tool">
-    <md-button
+    <el-button
       v-for="(button, bIndex) in buttons"
       :key="'piece-tool-'+bIndex"
       :title="button.name"
       class="md-icon-button"
       @click="operateClick(button)"
     >
-      <md-icon :title="button.name">{{ button.icon }}</md-icon>
-    </md-button>
+      <!-- <md-icon :title="button.name">{{ button.icon }}</md-icon> -->
+    </el-button>
   </div>
   <!-- 主体 -->
   <div class="piece-wrap" ref="piece-comp">
     <component :is="temp" /> 
   </div>
   <!-- 展示截图内容 -->
-  <md-dialog
+  <el-dialog
     class="view-piece-dialog"
-    :md-active.sync="pieceDialog"
-    :md-click-outside-to-close="false"
+    :title="pieceTip"
+    :visible.sync="pieceDialog"
+    :close-on-click-modal="false"
   >
-    <md-dialog-title>{{pieceTip}}</md-dialog-title>
-    <md-card-content>
+    <!-- <md-card-content>
       <img :src="screenScr" alt="" style="width:800px;height:400px;display:inline-block;">
     </md-card-content>
     <md-dialog-actions style="width:100%;display:flex;">
       <md-button class="md-raised" @click="closeDialog()">关闭</md-button>
       <md-button class="md-raised" @click="saveScreen()">保存</md-button>
-    </md-dialog-actions>
-  </md-dialog>
+    </md-dialog-actions> -->
+  </el-dialog>
 </div>
 </template>
 <script>

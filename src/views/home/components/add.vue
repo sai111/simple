@@ -1,72 +1,31 @@
 <template>
-  <md-dialog
+  <el-dialog
     class="home-add-dialog"
-    :md-active.sync="showDialog"
-    :md-click-outside-to-close="false"
+    :title="title"
+    :visible.sync="showDialog"
+    :close-on-click-modal="false"
   >
-    <md-dialog-title>{{title}}</md-dialog-title>
-    <form novalidate class="md-layout" @submit.prevent="validateUser">
-      <md-card-content>
-        <md-field :class="getValidationClass('title')">
-          <label>英文分类名</label>
-          <md-input v-model="form.title" :disabled="sending" />
-          <span
-            class="md-error"
-            v-if="!$v.form.title.required">
-            为分类添加一个英文名
-          </span>
-          <span
-            class="md-error"
-            v-if="$v.form.title.required && !$v.form.title.correctEnglishName">
-            作品的英文名由大小写英文字母、数字、下划线组成
-          </span>
-        </md-field>
-        <md-field :class="getValidationClass('name')">
-          <label>中文标题</label>
-          <md-input v-model="form.name" :disabled="sending" />
-          <span
-            class="md-error"
-            v-if="!$v.form.name.required">
-            为分类添加一个中文标题
-          </span>
-          <span
-            class="md-error"
-            v-if="$v.form.name.required && !$v.form.name.minLength">
-            中文标题长度最小1个字符
-          </span>
-        </md-field>
-        <md-field :class="getValidationClass('desc')">
-          <label>描述</label>
-          <md-input v-model="form.desc" :disabled="sending" />
-          <span
-            class="md-error"
-            v-if="$v.form.desc.required">
-            为分类添加描述信息
-          </span>
-        </md-field>
-        <md-field :class="getValidationClass('tag')">
-          <label>标签(以逗号隔开)</label>
-          <md-input v-model="form.tag" :disabled="sending" />
-          <span
-            class="md-error"
-            v-if="$v.form.tag.required">
-            为分类添加标签信息
-          </span>
-        </md-field>
-      </md-card-content>
-       <md-dialog-actions style="width:100%">
-        <md-button class="md-primary" @click="close()">关闭</md-button>
-        <md-button class="md-primary" type="submit">保存</md-button>
-      </md-dialog-actions>
-    </form>
-  </md-dialog>
+    <el-form :model="form" :rules="rules" ref="ruleForm" label-width="120px">
+      <el-form-item label="英文分类名" prop="title">
+        <el-input v-model="form.title"></el-input>
+      </el-form-item>
+      <el-form-item label="中文标题" prop="name">
+        <el-input v-model="form.name"></el-input>
+      </el-form-item>
+      <el-form-item label="描述" prop="desc">
+        <el-input v-model="form.desc"></el-input>
+      </el-form-item>
+      <el-form-item label="标签(逗号隔开)" prop="tag">
+        <el-input v-model="form.tag"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button @click="close('ruleForm')">关闭</el-button>
+        <el-button @click="submitForm('ruleForm')">保存</el-button>
+      </el-form-item>
+    </el-form>
+  </el-dialog>
 </template>
 <script>
-import { validationMixin } from 'vuelidate'
-import { required, maxLength, minLength } from 'vuelidate/lib/validators'
-const correctEnglishName = (str) => {
-  return /^[0-9a-zA-Z_]{1,}$/.test(str)
-}
 export default {
   name: 'HomeAdd',
   props: {
@@ -75,8 +34,16 @@ export default {
       default: false
     }
   },
-  mixins: [validationMixin],
+  mixins: [],
   data() {
+    const validateTitle = (rules, value, callback) => {
+      let reg = /^[0-9a-zA-Z_]{1,}$/
+      if (!reg.test(value)) {
+        callback(new Error('作品的英文名由大小写英文字母、数字、下划线组成'))
+      } else {
+        callback()
+      }
+    }
     return {
       showDialog: false,
       sending: false,
@@ -88,37 +55,27 @@ export default {
         name: '',
         desc: '',
         tag: ''
-      }
-    }
-  },
-  validations: {
-    form: {
-      title: {
-        required,
-        correctEnglishName
       },
-      name: {
-        required,
-        minLength: minLength(1)
-      },
-      desc: {
-        required
-      },
-      tag: {
-        required
+      rules: {
+        title: [
+          {required: true, message: `为分类${this.isAdd ? '添加' : '修改'}一个英文名`, trigger: 'blur'},
+          {validator: validateTitle, message: '英文名由大小写英文字母、数字、下划线组成'}
+        ],
+        name: [
+          {required: true, message: `为分类${this.isAdd  ? '添加' : '修改'}一个中文标题`, trigger: 'blur'},
+          {min: 1, message: '中文标题长度最小1个字符'}
+        ],
+        desc: [
+          {required: true, message: `为分类${this.isAdd  ? '添加' : '修改'}描述信息`, trigger: 'blur'}
+        ],
+        tag: [
+          {required: true, message: `为分类${this.isAdd  ? '添加' : '修改'}标签信息`, trigger: 'blur'}
+        ]
       }
     }
   },
   mounted() {},
   methods: {
-    getValidationClass(fieldName) {
-      const field = this.$v.form[fieldName]
-      if (field) {
-        return {
-          'md-invalid': field.$invalid && field.$dirty
-        }
-      }
-    },
     openDialog() {
       this.showDialog = true
     },
@@ -138,10 +95,10 @@ export default {
         }
       }
     },
-    close() {
-      this.$v.$reset()
+    close(formName) {
       this.showDialog = false
       this.id = null
+      this.$refs[formName].resetFields()
       for (const k in this.form) {
         if (this.form.hasOwnProperty(k)) {
           this.form[k] = ''
@@ -150,11 +107,15 @@ export default {
         }
       }
     },
-    validateUser() {
-      this.$v.$touch()
-      if (!this.$v.$invalid) {
-        this.save()
-      }
+    submitForm(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.save()
+        } else {
+          this.$message.error('请检查表单是否正确填写!')
+          return false
+        }
+      })
     },
     save() {
       this.$http({

@@ -1,26 +1,27 @@
 <template>
 <div class="layout">
   <!-- 导航 -->
-  <section class="app-nav">
-    <md-toolbar color="primary">
-      <h3 class="md-title" style="flex:1 1 1%">Default</h3>
-      <md-button
-        class="md-raised"
-        v-for="(item, index) in routers"
-        v-show="item.show"
-        :key="'md-button-router-'+index">
-        <router-link :to="item.path">
-          {{item.meta.title}}
-        </router-link>
-      </md-button>
-    </md-toolbar>
-  </section>
-  <!-- 页面 -->
-  <section class="app-main">
-    <transition name="fade" mode="out-in">
-      <router-view></router-view>
-    </transition>  
-  </section>
+  <el-container class="app-nav">
+    <el-header color="primary">
+      <div class="layout-nav">default</div>
+      <div class="layout-list">
+        <div
+          class="layout-list-li"
+          v-for="(item, index) in routers"
+          v-show="item.show"
+          :key="'md-button-router-'+index">
+          <router-link :to="item.path">
+            {{item.meta.title}}
+          </router-link>
+        </div>
+      </div>
+    </el-header>
+    <el-container>
+      <transition name="fade" mode="out-in">
+        <router-view></router-view>
+      </transition>
+    </el-container>
+  </el-container>
 </div>
 </template>
 <script>
@@ -39,13 +40,27 @@ export default {
 .layout {
   width: 100%;
   height: 100%;
-  section.app-nav {
+  .el-header {
     width: 100%;
-    height: 64px;
-  }
-  section.app-main {
-    width: 100%;
-    height: calc(100% - 64px);
+    line-height: 60px;
+    height: 60px;
+    box-shadow: 0px 4px 5px 0 rgba(0,0,0,.4);
+    display: flex;
+    .layout-nav {
+      width: 240px;
+      height: 100%;
+    }
+    .layout-list {
+      flex: 1 1 1%;
+      display: flex;
+      justify-content: flex-end;
+      &-li {
+        margin-right: 15px;
+        a {
+          text-decoration: none;
+        }
+      }
+    }
   }
 }
 </style>
