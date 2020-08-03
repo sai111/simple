@@ -49,6 +49,13 @@ export default {
           desc: '字符云可以将文字根据不同的权重布局为大小、颜色各异的图，支持使用图片作为遮罩',
           tag: 'canvas',
           type: 'canvas'
+        },
+        {
+          name: 'css-specialBar',
+          title: 'specialBar',
+          desc: '特殊的柱形图',
+          tag: 'svg,bar,linearGradient',
+          type: 'svg'
         }
       ]
     }

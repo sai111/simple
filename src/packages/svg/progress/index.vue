@@ -1,13 +1,10 @@
 <template>
-    <div class="wordCloud-entry">
-        <wordCloud />
-    </div>
+    <div class="progress">progress组件</div>
 </template>
 <script>
-import wordCloud from './index.vue'
 export default {
-    name: 'wordCloudEntry',
-    components: { wordCloud },
+    name: 'progress',
+    props: {},
     data() {
         return {}
     },
@@ -18,5 +15,8 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.wordCloud-entry {}
+.progress {
+    width: 100%;
+    height: 100%
+}
 </style>

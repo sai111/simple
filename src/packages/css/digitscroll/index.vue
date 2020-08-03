@@ -1,9 +1,9 @@
 <template>
-    <div class="wordCloud">wordCloud组件</div>
+    <div class="digitscroll">digitscroll组件</div>
 </template>
 <script>
 export default {
-    name: 'wordCloud',
+    name: 'digitscroll',
     props: {},
     data() {
         return {}
@@ -15,5 +15,8 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.wordCloud {}
+.digitscroll {
+    width: 100%;
+    height: 100%
+}
 </style>

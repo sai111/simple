@@ -1,0 +1,1 @@
+/** digitscroll配置项 */
