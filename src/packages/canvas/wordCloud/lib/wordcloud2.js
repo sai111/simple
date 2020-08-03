@@ -162,6 +162,7 @@ if (!window.clearImmediate) {
       elements = [elements];
     }
 
+
     elements.forEach(function(el, i) {
       if (typeof el === 'string') {
         elements[i] = document.getElementById(el);
@@ -184,7 +185,7 @@ if (!window.clearImmediate) {
       weightFactor: 1,
       clearCanvas: true,
       backgroundColor: '#fff',  // opaque white = rgba(255, 255, 255, 1)
-
+      
       gridSize: 8,
       drawOutOfBound: false,
       origin: null,
@@ -199,7 +200,6 @@ if (!window.clearImmediate) {
 
       minRotation: - Math.PI / 2,
       maxRotation: Math.PI / 2,
-      rotationStep: 0.1,
 
       shuffle: true,
       rotateRatio: 0.1,
@@ -210,7 +210,8 @@ if (!window.clearImmediate) {
       classes: null,
 
       hover: null,
-      click: null
+      click: null,
+      imageShape: null
     };
 
     if (options) {
@@ -220,7 +221,6 @@ if (!window.clearImmediate) {
         }
       }
     }
-
     /* Convert weightFactor into a function */
     if (typeof settings.weightFactor !== 'function') {
       var factor = settings.weightFactor;
@@ -246,12 +246,15 @@ if (!window.clearImmediate) {
           break;
 
         /*
+
         To work out an X-gon, one has to calculate "m",
         where 1/(cos(2*PI/X)+m*sin(2*PI/X)) = 1/(cos(0)+m*sin(0))
         http://www.wolframalpha.com/input/?i=1%2F%28cos%282*PI%2FX%29%2Bm*sin%28
         2*PI%2FX%29%29+%3D+1%2F%28cos%280%29%2Bm*sin%280%29%29
+
         Copy the solution into polar equation r = 1/(cos(t') + m*sin(t'))
         where t' equals to mod(t, 2PI/X);
+
         */
 
         case 'diamond':
@@ -318,7 +321,6 @@ if (!window.clearImmediate) {
     /* normalize rotation settings */
     var rotationRange = Math.abs(settings.maxRotation - settings.minRotation);
     var minRotation = Math.min(settings.maxRotation, settings.minRotation);
-    var rotationStep = settings.rotationStep;
 
     /* information/object available to all functions, set when start() */
     var grid, // 2d array containing filling information
@@ -419,6 +421,21 @@ if (!window.clearImmediate) {
       evt.preventDefault();
     };
 
+    // imageShape
+    // var getImageShape = function getImageShape(option) {
+    //   var img = window.document.createElement('img')
+    //   img.crossOrigin = "Anonymous"
+    //   img.src = option
+    //   img.onload = function () {
+    //     console.log(option, 'getImageShape2222', img)
+    //     let maskCanvas = window.document.createElement('canvas')
+    //     console.log(img, maskCanvas, 'maskShape', option)
+    //   }
+    //   img.onerror = function() {
+    //     getImageShape(option)
+    //   }
+    //   // img.src = option
+    // }
     /* Get points on the grid for a given radius away from the center */
     var pointsAtRadius = [];
     var getPointsAtRadius = function getPointsAtRadius(radius) {
@@ -476,7 +493,7 @@ if (!window.clearImmediate) {
         return minRotation;
       }
 
-      return minRotation + Math.round(Math.random() * rotationRange / rotationStep) * rotationStep;
+      return minRotation + Math.random() * rotationRange;
     };
 
     var getTextInfo = function getTextInfo(word, weight, rotateDeg) {
@@ -912,12 +929,8 @@ if (!window.clearImmediate) {
         // Mark the spaces on the grid as filled
         updateGrid(gx, gy, gw, gh, info, item);
 
-        return {
-          gx: gx,
-          gy: gy,
-          rot: rotateDeg,
-          info: info
-        };
+        // Return true so some() will stop and also return true.
+        return true;
       };
 
       while (r--) {
@@ -931,21 +944,16 @@ if (!window.clearImmediate) {
         // Try to fit the words by looking at each point.
         // array.some() will stop and return true
         // when putWordAtPoint() returns true.
-        for (var i = 0; i < points.length; i++) {
-          var res = tryToPutWordAtPoint(points[i]);
-          if (res) {
-            return res;
-          }
-        }
+        // If all the points returns false, array.some() returns false.
+        var drawn = points.some(tryToPutWordAtPoint);
 
-        // var drawn = points.some(tryToPutWordAtPoint);
-        // if (drawn) {
-        //   // leave putWord() and return true
-        //   return true;
-        // }
+        if (drawn) {
+          // leave putWord() and return true
+          return true;
+        }
       }
-      // we tried all distances but text won't fit, return null
-      return null;
+      // we tried all distances but text won't fit, return false
+      return false;
     };
 
     /* Send DOM event to all elements. Will stop sending event and return
@@ -970,30 +978,30 @@ if (!window.clearImmediate) {
     var start = function start() {
       // For dimensions, clearCanvas etc.,
       // we only care about the first element.
-      var canvas = elements[0]
+      var canvas = elements[0];
 
       if (canvas.getContext) {
-        ngx = Math.ceil(canvas.width / g)
-        ngy = Math.ceil(canvas.height / g)
+        ngx = Math.ceil(canvas.width / g);
+        ngy = Math.ceil(canvas.height / g);
       } else {
-        var rect = canvas.getBoundingClientRect()
-        ngx = Math.ceil(rect.width / g)
-        ngy = Math.ceil(rect.height / g)
+        var rect = canvas.getBoundingClientRect();
+        ngx = Math.ceil(rect.width / g);
+        ngy = Math.ceil(rect.height / g);
       }
 
       // Sending a wordcloudstart event which cause the previous loop to stop.
       // Do nothing if the event is canceled.
       if (!sendEvent('wordcloudstart', true)) {
-        return
+        return;
       }
 
       // Determine the center of the word cloud
       center = (settings.origin) ?
         [settings.origin[0]/g, settings.origin[1]/g] :
-        [ngx / 2, ngy / 2]
+        [ngx / 2, ngy / 2];
 
       // Maxium radius to look for space
-      maxRadius = Math.floor(Math.sqrt(ngx * ngx + ngy * ngy))
+      maxRadius = Math.floor(Math.sqrt(ngx * ngx + ngy * ngy));
 
       /* Clear the canvas only if the clearCanvas is set,
          if not, update the grid to the current canvas state */
@@ -1003,14 +1011,14 @@ if (!window.clearImmediate) {
       if (!canvas.getContext || settings.clearCanvas) {
         elements.forEach(function(el) {
           if (el.getContext) {
-            var ctx = el.getContext('2d')
-            ctx.fillStyle = settings.backgroundColor
-            ctx.clearRect(0, 0, ngx * (g + 1), ngy * (g + 1))
-            ctx.fillRect(0, 0, ngx * (g + 1), ngy * (g + 1))
+            var ctx = el.getContext('2d');
+            ctx.fillStyle = settings.backgroundColor;
+            ctx.clearRect(0, 0, ngx * (g + 1), ngy * (g + 1));
+            ctx.fillRect(0, 0, ngx * (g + 1), ngy * (g + 1));
           } else {
-            el.textContent = ''
-            el.style.backgroundColor = settings.backgroundColor
-            el.style.position = 'relative'
+            el.textContent = '';
+            el.style.backgroundColor = settings.backgroundColor;
+            el.style.position = 'relative';
           }
         });
 
@@ -1066,7 +1074,36 @@ if (!window.clearImmediate) {
 
         imageData = bctx = bgPixel = undefined;
       }
-
+      
+      /* imageShape */
+      if (settings.imageShape) {
+        if (settings.imageShape && /\.(jpg|png)$/.test(settings.imageShape)) {
+          var img = window.document.createElement('img')
+          img.crossOrigin = "Anonymous"
+          img.src = settings.imageShape
+          try {
+            img.onload = function() {
+              var maskCanvas = window.document.createElement('canvas')
+              maskCanvas.width = img.width
+              maskCanvas.height = img.height
+              console.log(maskCanvas, '00000', img)
+              var ctx = document.createElement('canvas').getContext('2d')
+              ctx.drawImage(img, 0, 0, img.width, img.height)
+              
+              var imageData = ctx.getImageData(0, 0, maskCanvas.width, maskCanvas.height)
+              var newImageData = ctx.createImageData(imageData)
+  
+              for (var i = 0; i < imageData.data.length; i += 4) {
+                console.log(i, 'iiiii======000000')
+              }
+              ctx.putImageData(newImageData, 0, 0)
+            }
+            img.onerror = function() {}
+          } catch (error) {
+            console.log(error)
+          }
+        }
+      }
       // fill the infoGrid with empty state if we need it
       if (settings.hover || settings.click) {
 
@@ -1163,6 +1200,7 @@ if (!window.clearImmediate) {
 
   // Expose the library as an AMD module
   if (typeof define === 'function' && define.amd) {
+    global.WordCloud = WordCloud;
     define('wordcloud', [], function() { return WordCloud; });
   } else if (typeof module !== 'undefined' && module.exports) {
     module.exports = WordCloud;

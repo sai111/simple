@@ -8,20 +8,20 @@
 const toLower = text => {
     return text.toString().toLowerCase()
   }
-const searchByName = (items, term) => {
-  if (term) {
-    return items.filter(item => toLower(item.name).includes(toLower(term)))
-  }
-  return items
-}
+// const searchByName = (items, term) => {
+//   if (term) {
+//     return items.filter(item => toLower(item.name).includes(toLower(term)))
+//   }
+//   return items
+// }
 import { typeKey } from './index.js'
 import houseJson from './index.json'
 import { getHouseList } from './api'
 import baseTable from '@/views/components/table/baseTable.vue'
-import mergeTable from '@/views/components/table/mergeTable.vue'
+// import mergeTable from '@/views/components/table/mergeTable.vue'
 export default {
   name: 'House',
-  components: { mergeTable, baseTable },
+  components: { baseTable },
   data() {
     return {
       search: null,
@@ -58,7 +58,7 @@ export default {
       let res = await getHouseList()
       let data = res.data.data
       if (data && data.length > 0) {
-        data.forEach((v, i) => {
+        data.forEach((v) => {
           this.priceColor.forEach((m, n) => {
             let k1 = m.max
             let k2 = m.min

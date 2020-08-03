@@ -1,18 +1,16 @@
 <template>
 <div
   ref="piece-main"
-  class="piece"
->
+  class="piece">
   <div class="piece-tool">
-    <el-button
+    <div
       v-for="(button, bIndex) in buttons"
       :key="'piece-tool-'+bIndex"
       :title="button.name"
-      class="md-icon-button"
-      @click="operateClick(button)"
-    >
-      <!-- <md-icon :title="button.name">{{ button.icon }}</md-icon> -->
-    </el-button>
+      class="piece-tool-icon"
+      @click="operateClick(button)">
+      <i :title="button.name" :class="button.icon" />
+    </div>
   </div>
   <!-- 主体 -->
   <div class="piece-wrap" ref="piece-comp">
@@ -21,17 +19,15 @@
   <!-- 展示截图内容 -->
   <el-dialog
     class="view-piece-dialog"
+    width="500px"
     :title="pieceTip"
     :visible.sync="pieceDialog"
-    :close-on-click-modal="false"
-  >
-    <!-- <md-card-content>
-      <img :src="screenScr" alt="" style="width:800px;height:400px;display:inline-block;">
-    </md-card-content>
-    <md-dialog-actions style="width:100%;display:flex;">
-      <md-button class="md-raised" @click="closeDialog()">关闭</md-button>
-      <md-button class="md-raised" @click="saveScreen()">保存</md-button>
-    </md-dialog-actions> -->
+    :close-on-click-modal="false">
+    <img :src="screenScr" alt="" style="height:300px;width:100%;">
+    <div style="width:100%;display:flex;justify-content:flex-end;">
+      <el-button class="md-raised" @click="closeDialog()">关闭</el-button>
+      <el-button class="md-raised" @click="saveScreen()">保存</el-button>
+    </div>
   </el-dialog>
 </div>
 </template>
@@ -50,10 +46,10 @@ export default {
   data() {
     return {
       buttons: [
-        {code: 'screenshot', icon: 'photo_camera', name: '截图'},
-        {code: 'config', icon: 'build', name: '配置'},
-        {code: 'markdown', icon: 'library_books', name: '文档'},
-        {code: 'close', icon: 'close', name: '关闭'}
+        {code: 'screenshot', icon: 'el-icon-camera', name: '截图'},
+        {code: 'config', icon: 'el-icon-setting', name: '配置'},
+        {code: 'markdown', icon: 'el-icon-document', name: '文档'},
+        {code: 'close', icon: 'el-icon-close', name: '关闭'}
       ],
       screenScr: null,
       pieceDialog: false,
@@ -132,6 +128,12 @@ export default {
     position: absolute;
     top: 0;
     right: 0;
+    display: flex;
+    &-icon {
+      font-size: 24px;
+      padding-right: 5px;
+      cursor: pointer;
+    }
   }
   &-wrap {
     width: 100%;
