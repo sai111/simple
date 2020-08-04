@@ -65,6 +65,27 @@ export default {
           tag: 'svg',
           en: 'svg'
         },
+        {
+          name: 'css-bubbles',
+          title: 'bubbles',
+          desc: 'CSS 滤镜实现安卓充电动画效果',
+          tag: 'css,animate',
+          en: 'css'
+        },
+        {
+          name: 'css-scale',
+          title: 'scale',
+          desc: 'CSS 收缩动画',
+          tag: 'css,scale',
+          en: 'css'
+        },
+        {
+          name: 'svg-scale',
+          title: 'radarScan',
+          desc: 'radarScan 雷达扫描效果',
+          tag: 'svg,rotate',
+          en: 'svg'
+        },
         // {
         //   name: 'css-digitscroll',
         //   title: 'digitscroll',
