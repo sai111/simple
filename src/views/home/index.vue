@@ -35,27 +35,49 @@ export default {
       pieceType: '',
       isAdd: false,
       categoryList: [],
+      // childList: [],
       childList: [
         {
           name: 'css-三角形',
           title: 'triangle',
           desc: '三角形代码整理',
           tag: 'css',
-          type: 'css'
+          en: 'css'
         },
         {
           name: 'canvas-wordCloud',
           title: 'wordCloud',
           desc: '字符云可以将文字根据不同的权重布局为大小、颜色各异的图，支持使用图片作为遮罩',
           tag: 'canvas',
-          type: 'canvas'
+          en: 'canvas'
         },
         {
           name: 'css-specialBar',
           title: 'specialBar',
           desc: '特殊的柱形图',
           tag: 'svg,bar,linearGradient',
-          type: 'svg'
+          en: 'svg'
+        },
+        {
+          name: 'svg-progress',
+          title: 'progress',
+          desc: '进度条可以根据设置不同的布局，颜色，支持使用图片,svg作为填充物',
+          tag: 'svg',
+          en: 'svg'
+        },
+        // {
+        //   name: 'css-digitscroll',
+        //   title: 'digitscroll',
+        //   desc: '数字滚动效果',
+        //   tag: 'css,animate',
+        //   en: 'css'
+        // },
+        {
+          name: 'svg-filter',
+          title: 'filter',
+          desc: 'svg滤镜效果',
+          tag: 'svg,filter',
+          en: 'svg'
         }
       ]
     }
@@ -65,7 +87,14 @@ export default {
   },
   methods: {
     categoryClick(item) {
-      this.pieceType = item.type
+      this.pieceType = item.en
+      // this.$http({
+      //   method: 'get',
+      //   url: '/api/collect/list',
+      //   params: {en: item.en}
+      // }).then((res) => {
+      //   console.log(res, 'piece----type')
+      // })
     },
     // 新增
     addCategory() {
@@ -73,7 +102,7 @@ export default {
       let addForm = {
         name: '',
         desc: '',
-        title: '',
+        en: '',
         tag: ''
       }
       this.$refs['home-add-dialog'].activateForm('创建一个合集', addForm)
@@ -82,14 +111,16 @@ export default {
       this.getList()
     },
     editCate(obj) {
+      console.log(obj, 'onj===修改')
       this.isAdd = false
       let addForm = {
         name: obj.name,
         desc: obj.desc,
-        title: obj.title,
-        tag: obj.tag
+        en: obj.en,
+        tag: obj.tag,
+        _id: obj._id
       }
-      this.$refs['home-add-dialog'].activateForm(`修改${obj.title}合集`, addForm)
+      this.$refs['home-add-dialog'].activateForm(`修改${obj.en}合集`, addForm)
     },
     deleteCate(obj) {
       this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
@@ -115,7 +146,7 @@ export default {
         url: '/api/collect/list'
       }).then((res) => {
         this.categoryList = res.data.data
-        this.pieceType = res.data.data[0].type || res.data.data[0].type
+        this.pieceType = res.data.data[0].en
       })
     }
   }

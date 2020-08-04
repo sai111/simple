@@ -1,5 +1,6 @@
 <template>
     <div class="digitscroll-entry">
+        digitscroll组件
         <digitscroll />
     </div>
 </template>

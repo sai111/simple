@@ -6,8 +6,8 @@
     :close-on-click-modal="false"
   >
     <el-form :model="form" :rules="rules" ref="ruleForm" label-width="120px">
-      <el-form-item label="英文分类名" prop="title">
-        <el-input v-model="form.title"></el-input>
+      <el-form-item label="英文分类名" prop="en">
+        <el-input v-model="form.en"></el-input>
       </el-form-item>
       <el-form-item label="中文标题" prop="name">
         <el-input v-model="form.name"></el-input>
@@ -51,13 +51,13 @@ export default {
       title: '',
       id: '',
       form: {
-        title: '',
+        en: '',
         name: '',
         desc: '',
         tag: ''
       },
       rules: {
-        title: [
+        en: [
           {required: true, message: `为分类${this.isAdd ? '添加' : '修改'}一个英文名`, trigger: 'blur'},
           {validator: validateTitle, message: '英文名由大小写英文字母、数字、下划线组成'}
         ],
@@ -89,6 +89,7 @@ export default {
       this.categoryType = type
       this.openDialog()
       this.title = dialogTitle
+      if (!this.isAdd) this.id = obj._id
       for (const k in this.form) {
         if (this.form.hasOwnProperty(k)) {
           this.form[k] = obj[k]
@@ -118,10 +119,14 @@ export default {
       })
     },
     save() {
+      let param = Object.assign({}, this.form)
+      if (!this.isAdd) {
+        param._id = this.id
+      }
       this.$http({
         method: 'POST',
         url: `/api/collect/${this.isAdd ? 'add': 'update'}`,
-        data: this.form
+        data: param
       }).then((res) => {
         this.showDialog = false
         this.$emit('cateAddSuccess')

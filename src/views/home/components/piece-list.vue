@@ -45,7 +45,6 @@ export default {
     addDialog() {
       let addForm = {
         name: '',
-        title: '',
         desc: '',
         en: '',
         tag: ''
@@ -66,15 +65,19 @@ export default {
   width: 100%;
   height: 100%;
   display: flex;
+  flex-wrap: wrap;
   &-block {
     position: relative;
     width: 100%;
-    transform-style:preserve-3d;
-    perspective:800px;
-    margin-right: 15px;
-    flex-basis: calc(25% - 15px);
+    transform-style: preserve-3d;
+    perspective: 800px;
+    margin: 0 15px 15px 0;
+    flex-basis: calc(24% - 15px);
     flex-grow: 0;
-    flex-shrink: 25;
+    flex-shrink: 24;
+    &:nth-child(4n + 4) {
+      margin-right: 0;
+    }
     .piece-content {
       width: 250px;
       height: 150px;

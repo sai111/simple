@@ -20,7 +20,7 @@ export default {
 <style lang="scss" scoped>
 .${compoenntName} {
     width: 100%;
-    height: 100%
+    height: 100%;
 }
 </style>`
     },
@@ -48,7 +48,7 @@ export default {
 <style lang="scss" scoped>
 .${compoenntName}-entry {
     width: 100%;
-    height: 100%
+    height: 100%;
 }
 </style>`
     },

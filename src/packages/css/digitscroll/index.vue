@@ -1,5 +1,5 @@
 <template>
-    <div class="digitscroll">digitscroll组件</div>
+    <div class="digitscroll"></div>
 </template>
 <script>
 export default {
