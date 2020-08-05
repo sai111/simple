@@ -220,7 +220,7 @@ export default {
         // 呼吸灯持续时间（单位：秒）
         breatheDuration: {
             type: Number,
-            default: 2
+            default: 3
         },
         // 最小呼吸值
         breatheMin: {
@@ -390,9 +390,6 @@ export default {
             } else {
                 return 1
             }
-        },
-        breatheDurationTime() {
-            return this.breatheDuration * 1000
         }
     },
     watch: {
@@ -455,7 +452,7 @@ export default {
             if (this.destryedFlag) return false
             let timeDiff = Date.now() - this.breatheStartTime
             if (timeDiff > 0) {
-                this.breatheValue = Math.sin(timeDiff / this.breatheDurationTime * Math.PI) * ((1 - this.breatheMin) * 0.5 + this.breatheMin / 2)
+                this.breatheValue = Math.sin(timeDiff / (this.breatheDuration * 1000) * Math.PI) * (1 - this.breatheMin)+ 0.5 + this.breatheMin / 2
                 this.breatheValue *= this.breatheRate
                 requestAnimationFrame(this.breatheTick)
             }
