@@ -16,6 +16,7 @@ export default {
                 height: 500,
                 outRadius: 200,
                 startAngle: 0,
+                lightAngle: 14,
                 value: Math.random() * 100,
                 sum: 100,
                 innerRadius: 60,

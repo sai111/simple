@@ -24,6 +24,18 @@ export const polygonConfig = {
       type: [String, Number],
       default: 100
   },
+  startAngle: {
+      type: Number,
+      default: 0
+  },
+  lightShow: {
+      type: Boolean,
+      default: false
+  },
+  lightAngle: {
+      type: Number,
+      default: 14
+  },
   // 格式符号：目前支持【percent, divide, value】
   valueFormat: {
       type: String,
