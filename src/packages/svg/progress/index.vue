@@ -57,7 +57,7 @@
                 </mask>
             </defs>
             <!-- 插槽 -->
-            <slot name="before" :rect="rects" :rate="currentRate" />
+            <slot name="before" :rects="rects" :rate="currentRate"></slot>
             <!-- 底部 -->
             <g class="progress-bottom">
                 <template v-if="patternId">
@@ -115,7 +115,7 @@
                 </template>
             </g>
              <!-- 插槽 -->
-            <slot name="after" :rect="rects" :rate="currentRate" />
+            <slot name="after" :rects="rects" :rate="currentRate"></slot>
         </svg>
     </div>
 </template>
