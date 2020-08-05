@@ -42,49 +42,49 @@ export default {
           title: 'triangle',
           desc: '三角形代码整理',
           tag: 'css',
-          en: 'css'
+          category_code: 'css'
         },
         {
           name: 'canvas-wordCloud',
           title: 'wordCloud',
           desc: '字符云可以将文字根据不同的权重布局为大小、颜色各异的图，支持使用图片作为遮罩',
           tag: 'canvas',
-          en: 'canvas'
+          category_code: 'canvas'
         },
         {
           name: 'css-specialBar',
           title: 'specialBar',
           desc: '特殊的柱形图',
           tag: 'svg,bar,linearGradient',
-          en: 'svg'
+          category_code: 'svg'
         },
         {
           name: 'svg-progress',
           title: 'progress',
           desc: '进度条可以根据设置不同的布局，颜色，支持使用图片,svg作为填充物',
           tag: 'svg',
-          en: 'svg'
+          category_code: 'svg'
         },
         {
           name: 'css-bubbles',
           title: 'bubbles',
           desc: 'CSS 滤镜实现安卓充电动画效果',
           tag: 'css,animate',
-          en: 'css'
+          category_code: 'css'
         },
         {
           name: 'css-scale',
           title: 'scale',
           desc: 'CSS 收缩动画',
           tag: 'css,scale',
-          en: 'css'
+          category_code: 'css'
         },
         {
           name: 'svg-scale',
           title: 'radarScan',
           desc: 'radarScan 雷达扫描效果',
           tag: 'svg,rotate',
-          en: 'svg'
+          category_code: 'svg'
         },
         // {
         //   name: 'css-digitscroll',
@@ -98,14 +98,14 @@ export default {
           title: 'polygonRing',
           desc: 'svg环图/多边形环图 环图动态扫描效果',
           tag: 'svg,filter,animate,animateTransfrom',
-          en: 'svg'
+          category_code: 'svg'
         },
         {
           name: 'svg-filter',
           title: 'filter',
           desc: 'svg滤镜效果',
           tag: 'svg,filter',
-          en: 'svg'
+          category_code: 'svg'
         }
       ]
     }
@@ -115,7 +115,7 @@ export default {
   },
   methods: {
     categoryClick(item) {
-      this.pieceType = item.en
+      this.pieceType = item.category_code
       // this.$http({
       //   method: 'get',
       //   url: '/api/collect/list',
@@ -128,9 +128,9 @@ export default {
     addCategory() {
       this.isAdd = true
       let addForm = {
-        name: '',
-        desc: '',
-        en: '',
+        category: '',
+        category_desc: '',
+        category_code: '',
         tag: ''
       }
       this.$refs['home-add-dialog'].activateForm('创建一个合集', addForm)
@@ -142,13 +142,13 @@ export default {
       console.log(obj, 'onj===修改')
       this.isAdd = false
       let addForm = {
-        name: obj.name,
-        desc: obj.desc,
-        en: obj.en,
+        category: obj.category,
+        category_desc: obj.category_desc,
+        category_code: obj.category_code,
         tag: obj.tag,
         _id: obj._id
       }
-      this.$refs['home-add-dialog'].activateForm(`修改${obj.en}合集`, addForm)
+      this.$refs['home-add-dialog'].activateForm(`修改${obj.category_code||'css'}合集`, addForm)
     },
     deleteCate(obj) {
       this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
@@ -174,7 +174,7 @@ export default {
         url: '/api/collect/list'
       }).then((res) => {
         this.categoryList = res.data.data
-        this.pieceType = res.data.data[0].en
+        this.pieceType = res.data.data[0].category_code
       })
     }
   }

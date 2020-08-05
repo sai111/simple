@@ -19,11 +19,11 @@
       </div>
     </div>
   </div>
-   <home-add ref="piece-add-dialog" />
+   <home-piece-add ref="piece-add-dialog" />
 </div>
 </template>
 <script>
-import HomeAdd from '@/views/home/components/add.vue' 
+import HomePieceAdd from '@/views/home/components/piece-add.vue' 
 export default {
   name: 'PieceList',
   props: {
@@ -36,7 +36,7 @@ export default {
       default: ''
     }
   },
-  components: { HomeAdd },
+  components: { HomePieceAdd },
   data() {
     return {}
   },
@@ -44,10 +44,12 @@ export default {
   methods: {
     addDialog() {
       let addForm = {
+        en: '',
         name: '',
         desc: '',
-        en: '',
-        tag: ''
+        tag: '',
+        title: '',
+        img: ''
       }
       this.$refs['piece-add-dialog'].activateForm('创建一个作品', addForm, this.pieceType)
     },

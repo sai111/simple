@@ -6,14 +6,14 @@
     :close-on-click-modal="false"
   >
     <el-form :model="form" :rules="rules" ref="ruleForm" label-width="120px">
-      <el-form-item label="英文分类名" prop="category_code">
-        <el-input v-model="form.category_code"></el-input>
+      <el-form-item label="英文分类名" prop="en">
+        <el-input v-model="form.en"></el-input>
       </el-form-item>
-      <el-form-item label="中文标题" prop="category">
-        <el-input v-model="form.category"></el-input>
+      <el-form-item label="中文标题" prop="name">
+        <el-input v-model="form.name"></el-input>
       </el-form-item>
-      <el-form-item label="描述" prop="category_desc">
-        <el-input v-model="form.category_desc"></el-input>
+      <el-form-item label="描述" prop="desc">
+        <el-input v-model="form.desc"></el-input>
       </el-form-item>
       <el-form-item label="标签(逗号隔开)" prop="tag">
         <el-input v-model="form.tag"></el-input>
@@ -27,7 +27,7 @@
 </template>
 <script>
 export default {
-  name: 'HomeAdd',
+  name: 'HomePieceAdd',
   props: {
     isAdd: {
       type: Boolean,
@@ -46,24 +46,32 @@ export default {
     }
     return {
       showDialog: false,
+      sending: false,
+      categoryType: null,
       title: '',
       id: '',
       form: {
-        category_code: '',
-        category: '',
-        category_desc: '',
-        tag: ''
+        en: '',
+        name: '',
+        desc: '',
+        tag: '',
+        title: '',
+        img: ''
       },
       rules: {
-        category_code: [
+        title: [
           {required: true, message: `为分类${this.isAdd ? '添加' : '修改'}一个英文名`, trigger: 'blur'},
           {validator: validateTitle, message: '作品的英文名由大写英文字母、下划线组成'}
         ],
-        category: [
+        en: [
+          {required: true, message: `为分类${this.isAdd ? '添加' : '修改'}一个英文名`, trigger: 'blur'},
+          {validator: validateTitle, message: '作品的英文名由大写英文字母、下划线组成'}
+        ],
+        name: [
           {required: true, message: `为分类${this.isAdd  ? '添加' : '修改'}一个中文标题`, trigger: 'blur'},
           {min: 1, message: '中文标题长度最小1个字符'}
         ],
-        category_desc: [
+        desc: [
           {required: true, message: `为分类${this.isAdd  ? '添加' : '修改'}描述信息`, trigger: 'blur'}
         ],
         tag: [
@@ -84,7 +92,8 @@ export default {
      * obj: 参数
      * type: 类型,会当作参数进行传递
      */
-    activateForm(dialogTitle, obj = {}) {
+    activateForm(dialogTitle, obj = {}, type = null) {
+      this.categoryType = type
       this.openDialog()
       this.title = dialogTitle
       if (!this.isAdd) this.id = obj._id
