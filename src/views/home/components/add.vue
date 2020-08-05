@@ -6,7 +6,10 @@
     :close-on-click-modal="false"
   >
     <el-form :model="form" :rules="rules" ref="ruleForm" label-width="120px">
-      <el-form-item label="英文分类名" prop="en">
+      <el-form-item v-if="categoryType" label="英文分类名" prop="title">
+        <el-input v-model="form.title"></el-input>
+      </el-form-item>
+      <el-form-item v-else label="英文分类名" prop="en">
         <el-input v-model="form.en"></el-input>
       </el-form-item>
       <el-form-item label="中文标题" prop="name">
@@ -54,9 +57,14 @@ export default {
         en: '',
         name: '',
         desc: '',
-        tag: ''
+        tag: '',
+        title: ''
       },
       rules: {
+        title: [
+          {required: true, message: `为分类${this.isAdd ? '添加' : '修改'}一个英文名`, trigger: 'blur'},
+          {validator: validateTitle, message: '英文名由大小写英文字母、数字、下划线组成'}
+        ],
         en: [
           {required: true, message: `为分类${this.isAdd ? '添加' : '修改'}一个英文名`, trigger: 'blur'},
           {validator: validateTitle, message: '英文名由大小写英文字母、数字、下划线组成'}
@@ -74,6 +82,7 @@ export default {
       }
     }
   },
+  computed: {},
   mounted() {},
   methods: {
     openDialog() {

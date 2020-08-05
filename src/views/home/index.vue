@@ -94,6 +94,13 @@ export default {
         //   en: 'css'
         // },
         {
+          name: 'svg-polygonRing',
+          title: 'polygonRing',
+          desc: 'svg环图/多边形环图 环图动态扫描效果',
+          tag: 'svg,filter,animate,animateTransfrom',
+          en: 'svg'
+        },
+        {
           name: 'svg-filter',
           title: 'filter',
           desc: 'svg滤镜效果',
