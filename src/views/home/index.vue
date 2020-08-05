@@ -1,6 +1,6 @@
 <template>
 <el-container>
-  <el-aside width="200px">
+  <el-aside width="200px" height="100%">
     <div class="aside-button">
       <span class="home-left-label">{{homeLabel}}</span>
       <i class="el-icon-circle-plus"  @click="addCategory" />
@@ -16,7 +16,7 @@
       ></list-item>
     </div>
   </el-aside>
-  <el-main>
+  <el-main style="overflow:auto;height:100%;">
     <piece-list :piece-type="pieceType" :list="childList"></piece-list>
   </el-main>
   <home-add ref="home-add-dialog" :is-add="isAdd" @cateAddSuccess="addSuccess" />

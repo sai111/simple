@@ -16,7 +16,7 @@
         </div>
       </div>
     </el-header>
-    <el-container>
+    <el-container style="height:calc(100% - 60px)">
       <transition name="fade" mode="out-in">
         <router-view></router-view>
       </transition>
@@ -40,6 +40,10 @@ export default {
 .layout {
   width: 100%;
   height: 100%;
+  .app-nav {
+    width: 100%;
+    height: 100%;
+  }
   .el-header {
     width: 100%;
     line-height: 60px;

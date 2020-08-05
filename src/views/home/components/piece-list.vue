@@ -66,6 +66,7 @@ export default {
   height: 100%;
   display: flex;
   flex-wrap: wrap;
+  overflow: auto;
   &-block {
     position: relative;
     width: 100%;
