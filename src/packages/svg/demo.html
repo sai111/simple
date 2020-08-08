@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    /* controls */
+
+    html {
+      overflow: hidden;
+    }
+
+    body {
+      margin: 0;
+    }
+
+    svg {
+      display: block;
+      margin: calc(50vh - 50vmin) auto;
+      min-width: 10em;
+      min-height: 10em;
+      width: 100vmin;
+      height: 100vmin;
+      max-width: 100em;
+      max-height: 100em;
+      font-size: 1em;
+    }
+
+    text {
+      font: 700 100px monospace;
+      opacity: 0.001;
+    }
+
+    .q1,
+    .q2 {
+      dominant-baseline: hanging;
+    }
+
+    .q2,
+    .q3 {
+      text-anchor: end;
+    }
+
+    .hidden {
+      opacity: 0.001;
+      pointer-events: none;
+    }
+
+    [id='axis'],
+    [id='ccirc'],
+    [id='poly'],
+    [id='radius'],
+    .arc__line,
+    [id='vertices'] line,
+    [id='vertices'] circle {
+      vector-effect: non-scaling-stroke;
+    }
+
+    [id='axis'],
+    .axis--cover {
+      fill: #ccc;
+      stroke: #ccc;
+      stroke-width: 2;
+    }
+
+    [id='ccirc'] {
+      fill: transparent;
+      stroke: #555;
+      stroke-width: 2;
+    }
+
+    [id='poly'] {
+      fill: transparent;
+      stroke: #e18728;
+      stroke-width: 4;
+    }
+
+    .arc__fill {
+      fill: #ffd86e;
+    }
+
+    .arc__line {
+      fill: none;
+      stroke: #be4c39;
+      stroke-width: 4;
+      vector-effect: non-scaling-stroke;
+    }
+
+    .arc text {
+      fill: #9351a6;
+      dominant-baseline: middle;
+      text-anchor: middle;
+    }
+
+    [id='radius'] {
+      stroke: #e18728;
+      stroke-width: 4;
+    }
+
+    [id='vertices'] line {
+      stroke: #838383;
+      stroke-dasharray: 8;
+      stroke-width: 2;
+    }
+
+    [id='vertices'] circle {
+      fill: #ffd86e;
+      stroke: #be4c39;
+      stroke-width: 4;
+    }
+
+    [id='vertices'] text {
+      fill: #9351a6;
+    }
+
+    @media (min-width: 240px) and (min-height: 240px) {
+      text {
+        opacity: 0.999;
+      }
+    }
+
+    @media (min-width: 320px) and (min-height: 320px) {
+      text {
+        font-size: 80px;
+      }
+    }
+
+    @media (min-width: 480px) and (min-height: 480px) {
+      text {
+        font-size: 56px;
+      }
+    }
+
+    @media (min-width: 800px) and (min-height: 800px) {
+      text {
+        font-size: 40px;
+      }
+    }
+
+    form {
+      position: absolute;
+      bottom: 0.25em;
+      right: 0.25em;
+      margin: 0.25em;
+      padding: 0.5em;
+      background: #262626;
+      color: #aaa;
+      font: 1em/1.375em trebuchet ms, sans serif;
+      text-align: center;
+    }
+
+    input[type='range'] {
+      display: block;
+      margin: 1em auto 0;
+      padding: 0;
+      width: 13em;
+      height: 2em;
+      background: none;
+      font-size: 1em;
+      cursor: pointer;
+    }
+
+    input[type='range'],
+    input[type='range']::-webkit-slider-runnable-track,
+    input[type='range']::-webkit-slider-thumb {
+      -webkit-appearance: none;
+    }
+
+    input[type='range']::-webkit-slider-runnable-track {
+      width: 13em;
+      height: 0.25em;
+      background: #aaa;
+    }
+
+    input[type='range']::-moz-range-track {
+      width: 13em;
+      height: 0.25em;
+      background: #aaa;
+    }
+
+    input[type='range']::-ms-track {
+      border: none;
+      width: 13em;
+      height: 0.25em;
+      background: #aaa;
+      color: transparent;
+    }
+
+    input[type='range']::-moz-range-progress {
+      height: 0.25em;
+      background: #e18728;
+    }
+
+    input[type='range']::-ms-fill-lower {
+      background: #e18728;
+    }
+
+    input[type='range']::-webkit-slider-thumb {
+      margin-top: -0.5em;
+      border: none;
+      width: 1.25em;
+      height: 1.25em;
+      border-radius: 50%;
+      background: #e18728;
+    }
+
+    input[type='range']::-moz-range-thumb {
+      border: none;
+      width: 1.25em;
+      height: 1.25em;
+      border-radius: 50%;
+      background: #e18728;
+    }
+
+    input[type='range']::-ms-thumb {
+      border: none;
+      width: 1.25em;
+      height: 1.25em;
+      border-radius: 50%;
+      background: #e18728;
+    }
+
+    input[type='range']::-ms-tooltip {
+      display: none;
+    }
+
+    input[type='range']+label {
+      display: block;
+    }
+
+    input[type='range']:focus {
+      outline: none;
+    }
+  </style>
+</head>
+
+<body>
+  <svg viewbox="-1000 -1000 2000 2000">
+    <defs>
+      <circle id="vertex" r="8"></circle>
+      <path id="axis" d="M-1000,0 L1000,0"></path>
+    </defs>
+    <g class="axes">
+      <use xlink:href="#axis"></use>
+      <use xlink:href="#axis" transform="rotate(90)"></use>
+    </g>
+    <circle id="ccirc" r="700"></circle>
+    <polygon id="poly"></polygon>
+    <line x2="630" class="axis--cover"></line>
+    <line id="radius" x2="700"></line>
+    <g id="vertices"></g>
+    <g class="arc">
+      <path class="arc__fill"></path>
+      <path class="arc__line"></path>
+      <text> </text>
+    </g>
+    <circle id="origin" r="8"></circle>
+  </svg>
+  <form>
+    <input id="n" type="range" min="3" max="10" value="3" />
+    <label for="n">number of vertices: <span id="val--n">3</span>
+    </label>
+    <hr />
+    <p>base angle: <span id="val--a">120°</span>
+    </p>
+  </form>
+</body>
+<script>
+  /* because me lazy */
+  Object.getOwnPropertyNames(Math).map(function (p) {
+    window[p] = Math[p];
+  });
+
+  Node.prototype.setAttrs = function (attr_obj) {
+    for (var prop in attr_obj) {
+      this.setAttribute(prop, attr_obj[prop]);
+    }
+  };
+
+  var NS_URI = 'http://www.w3.org/2000/svg',
+    XLink_NS = 'http://www.w3.org/1999/xlink',
+    DEG_MOTION_SPEED = 3,
+    T_HL = 60,
+    LEN_MOTION_SPEED = 16,
+    V_RADIUS = 8,
+    PULSE_F = .32,
+    RAD_F = PI / 180,
+
+    svg = document.querySelector('svg'),
+    vb = svg.getAttribute('viewBox').split(' ')
+    .map(function (d) {
+      return ~~d;
+    }),
+    c_el = document.getElementById('ccirc'),
+    p_el = document.getElementById('poly'),
+    r_el = document.getElementById('radius'),
+    w_el = document.getElementById('vertices'),
+    r = ~~c_el.getAttribute('r'),
+    p, curr_off,
+    r_a = .2 * r,
+    n_el = document.getElementById('n'),
+    vn_el = document.getElementById('val--n'),
+    va_el = document.getElementById('val--a'),
+    arc_el = document.querySelector('.arc'),
+    arc_f_el = document.querySelector('.arc__fill'),
+    arc_l_el = document.querySelector('.arc__line'),
+    arc_t_el = document.querySelector('.arc text'),
+    n = ~~n_el.value,
+    vertices = [],
+    a_base = 360 / n,
+    k = 360 % n,
+    a_target = 0,
+    a = 0,
+    idx = 0,
+    r_id = null,
+    t = 0;
+
+  var init = function () {
+    createPoly();
+  };
+
+  var f = function () {
+    var m = ~~n_el.value;
+
+    if (m !== n) {
+      if (r_id) {
+        cancelAnimationFrame(r_id);
+        r_id = null;
+      }
+
+      idx = 0;
+      a = 0;
+      t = 0;
+      n = m;
+      a_base = 360 / n;
+      k = 360 % n;
+
+      stepDisplay();
+
+      vn_el.textContent = n;
+
+      va_el.textContent =
+        ('' + a_base).slice(0, 5) + '°';
+
+      createPoly();
+    }
+  };
+
+  var createPoly = function () {
+    var frg = document.createDocumentFragment(),
+      curr_vx, curr_pt, curr_txt, curr_r,
+      x, y, l, q, j1, j2, p_txt = '',
+      rad_a_base = 2 * PI / n,
+      rad_a;
+
+    vertices = [];
+    w_el.textContent = '';
+
+    l = 2 * r * sin(rad_a_base / 2);
+    curr_off = p = n * l;
+
+    p_el.setAttrs({
+      'stroke-dasharray': p,
+      'stroke-dashoffset': curr_off
+    });
+
+    for (var i = 0; i < n; i++) {
+      rad_a = i * rad_a_base;
+      q = floor(2 * rad_a / PI);
+      j1 = floor(q / 2);
+      j2 = q % 2;
+      x = r * cos(rad_a);
+      y = r * sin(rad_a);
+
+      p_txt += x + ',' + y + ' ';
+
+      curr_r = document.createElementNS(
+        NS_URI,
+        'line'
+      );
+      curr_r.setAttrs({
+        'x2': x,
+        'y2': y,
+        'class': 'hidden'
+      });
+
+      curr_pt = document.createElementNS(
+        NS_URI,
+        'circle'
+      );
+      curr_pt.setAttrs({
+        'cx': x,
+        'cy': y
+      });
+
+      curr_txt = document.createElementNS(
+        NS_URI,
+        'text'
+      );
+      curr_txt.textContent =
+        (i + '*' + a_base).slice(0, 7) + '°';
+      curr_txt.setAttrs({
+        'x': x + 2 * V_RADIUS * pow(-1, j2 ^ j1),
+        'y': y + 2 * V_RADIUS * pow(-1, j1),
+        'class': 'q' + (q + 1)
+      });
+
+      curr_vx = document.createElementNS(
+        NS_URI,
+        'g'
+      );
+      curr_vx.setAttrs({
+        'class': 'hidden'
+      });
+
+      vertices.push({
+        'v': curr_vx,
+        'p': curr_pt,
+        'r': curr_r
+      });
+
+      curr_vx.appendChild(curr_r);
+      curr_vx.appendChild(curr_pt);
+      curr_vx.appendChild(curr_txt);
+      frg.appendChild(curr_vx);
+    }
+
+    p_el.setAttribute('points', p_txt.trim());
+
+    w_el.appendChild(frg);
+
+    constructPoly();
+  };
+
+  var constructPoly = function () {
+    r_el.setAttribute('class', '');
+    arc_el.setAttribute('class', 'arc');
+    pulse();
+  };
+
+  var updateAngle = function () {
+    if (a >= a_target) {
+      a = a_target;
+      stepDisplay();
+
+      cancelAnimationFrame(r_id);
+      r_id = null;
+
+      pulse();
+      return;
+    }
+
+    a += DEG_MOTION_SPEED;
+    stepDisplay();
+
+    r_id = requestAnimationFrame(updateAngle);
+  };
+
+  var stepDisplay = function () {
+    var sn = (a > 100) ? 6 : 5,
+      rad_a = RAD_F * a,
+      x = r_a * cos(rad_a),
+      y = r_a * sin(rad_a),
+      d_txt = 'M' + ~~x + ' ' + ~~y + 'A' +
+      r_a + ' ' + r_a + ' 0 ' +
+      floor(a / 180) + ' 0 ' +
+      r_a + ' 0';
+
+    r_el.setAttribute(
+      'transform',
+      'rotate(' + a + ')'
+    );
+    arc_l_el.setAttribute('d', d_txt);
+
+    d_txt += 'L0,0z';
+
+    arc_f_el.setAttribute('d', d_txt);
+
+    arc_t_el.setAttribute(
+      'transform',
+      'rotate(' + .5 * a + ')' +
+      'translate(' + 1.5 * r_a + ')' +
+      'rotate(' + -.5 * a + ')'
+    );
+
+    arc_t_el.textContent =
+      ('' + a).slice(0, sn) + '°';
+  };
+
+  var pulse = function () {
+    if (t > T_HL) {
+      cancelAnimationFrame(r_id);
+      r_id = null;
+      t = 0;
+      if (idx < n) {
+        a = ~~a;
+        vertices[idx].r.setAttribute('class', '');
+
+        if (idx < n - 1) {
+          a_target = (++idx) * a_base;
+          updateAngle();
+        } else {
+          r_el.setAttribute('class', 'hidden');
+          arc_el.setAttribute('class', 'hidden');
+          drawPolyLine();
+        }
+      }
+      return;
+    }
+
+    if (idx < n) {
+      if (t === 0) {
+        vertices[idx].v.setAttribute('class', '');
+      }
+
+      vertices[idx].p.setAttribute(
+        'r',
+        V_RADIUS * (1.25 + sin(PULSE_F * t))
+      );
+    }
+
+    t++;
+
+    r_id = requestAnimationFrame(pulse);
+  };
+
+  var drawPolyLine = function () {
+    if (abs(curr_off) < LEN_MOTION_SPEED) {
+      curr_off = 0;
+      cancelAnimationFrame(r_id);
+      r_id = null;
+      return;
+    }
+
+    curr_off -= LEN_MOTION_SPEED;
+    p_el.setAttribute(
+      'stroke-dashoffset',
+      curr_off
+    );
+
+    r_id = requestAnimationFrame(drawPolyLine);
+  };
+
+  init();
+
+  n_el.addEventListener('change', f, false);
+  n_el.addEventListener('input', f, false);
+</script>
+
+</html>

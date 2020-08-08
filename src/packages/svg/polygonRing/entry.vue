@@ -15,16 +15,24 @@ export default {
                 width: 500,
                 height: 500,
                 outRadius: 200,
+                innerRadius: 120,
                 startAngle: 0,
                 lightAngle: 14,
                 value: Math.random() * 100,
                 sum: 100,
-                innerRadius: 60,
                 valueFormat: 'percent',
                 sideNum: 0,
                 lightConfig: {
                     duration: 9,
                     delay: 0
+                },
+                backgroundFill: {
+                    color: '',
+                    opacity: 0.4
+                },
+                valueFill: {
+                    color: '#33bbff',
+                    opacity: 1
                 }
             },
             visualMap: [
@@ -42,7 +50,8 @@ export default {
 </script>
 <style lang="scss" scoped>
 .polygonRing-entry {
-    width: 100%;
-    height: 100%;
+    width: 400px;
+    height: 400px;
+    margin: 0 auto;
 }
 </style>

@@ -14,7 +14,7 @@ export const polygonConfig = {
   },
   innerRadius: {
       type: [String, Number],
-      default: 60
+      default: 100
   },
   value: {
       type: [String, Number],
@@ -62,5 +62,34 @@ export const polygonConfig = {
           duration: 9,
           delay: 0
       }
+  },
+  backgroundFill: {
+    type: [Object, Array],
+    default: {
+        color: '',
+        opacity: 0.4
+    }
+  },
+  valueFill: {
+    type: [Object, Array],
+    default: {
+        color: '#33bbff',
+        opacity: 1
+    }
+  },
+  // 阴影等级，从【0-3】越高阴影越深，层级越丰富
+  shadowLevel: {
+    type: [String, Number],
+    default: 2
+  },
+  // 阴影模糊比例
+  shadowBlur: {
+    type: [String, Number],
+    default: 10
+  },
+  // 阴影透明度
+  shadowOpactiy: {
+    type: [String, Number],
+    default: 0.1
   }
 }

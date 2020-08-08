@@ -45,6 +45,13 @@ export default {
           category_code: 'css'
         },
         {
+          name: 'svg-arcPath',
+          title: 'arcPath',
+          desc: '弧线',
+          tag: 'svg,path,linearGradient',
+          category_code: 'svg'
+        },
+        {
           name: 'canvas-wordCloud',
           title: 'wordCloud',
           desc: '字符云可以将文字根据不同的权重布局为大小、颜色各异的图，支持使用图片作为遮罩',
