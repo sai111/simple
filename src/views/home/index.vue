@@ -1,9 +1,8 @@
 <template>
 <el-container>
   <el-aside width="200px" height="100%">
-    <div class="aside-button">
-      <span class="home-left-label">{{homeLabel}}</span>
-      <i class="el-icon-circle-plus"  @click="addCategory" />
+    <div class="aside-button" style="display: flex; justify-content:center;margin-top:30px;">
+      <el-button plain icon="el-icon-plus" @click="addCategory">{{homeLabel}}</el-button>
     </div>
     <div class="aside-list">
       <list-item
@@ -17,7 +16,7 @@
     </div>
   </el-aside>
   <el-main style="overflow:auto;height:100%;">
-    <piece-list :piece-type="pieceType" :list="childList"></piece-list>
+    <piece-list :piece-type="pieceType" :list="childList" @pieceSuccess="pieceSuccess"></piece-list>
   </el-main>
   <home-add ref="home-add-dialog" :is-add="isAdd" @cateAddSuccess="addSuccess" />
 </el-container>
@@ -35,8 +34,8 @@ export default {
       pieceType: '',
       isAdd: false,
       categoryList: [],
-      // childList: [],
-      childList: [
+      childList: [],
+      childList1: [
         {
           name: 'css-三角形',
           title: 'triangle',
@@ -121,15 +120,24 @@ export default {
     this.getList()
   },
   methods: {
+    // 分类：左侧模块接口
+    // 集合：右侧模块接口
     categoryClick(item) {
       this.pieceType = item.category_code
-      // this.$http({
-      //   method: 'get',
-      //   url: '/api/collect/list',
-      //   params: {en: item.en}
-      // }).then((res) => {
-      //   console.log(res, 'piece----type')
-      // })
+      this.getPiece(item.category_code)
+    },
+    pieceSuccess() {
+      this.getPiece(this.pieceType)
+    },
+    getPiece(item) {
+      this.childList = []
+      this.$http({
+        method: 'get',
+        url: '/api/collect/list',
+        params: {category_code: item}
+      }).then((res) => {
+        this.childList = res.data.data
+      })
     },
     // 新增
     addCategory() {
@@ -146,7 +154,6 @@ export default {
       this.getList()
     },
     editCate(obj) {
-      console.log(obj, 'onj===修改')
       this.isAdd = false
       let addForm = {
         category: obj.category,
@@ -166,7 +173,7 @@ export default {
         this.$message({message: '删除成功', type: 'success'})
         this.$http({
           method: 'POST',
-          url: '/api/collect/delete',
+          url: '/api/category/delete',
           data: {_id: obj._id}
         }).then(() => {
           this.getList()
@@ -178,10 +185,13 @@ export default {
     getList() {
       this.$http({
         method: 'get',
-        url: '/api/collect/list'
+        url: '/api/category/list'
       }).then((res) => {
         this.categoryList = res.data.data
-        this.pieceType = res.data.data[0].category_code
+        if (res.data.data && res.data.data.length > 0) {
+          this.pieceType = res.data.data[0].category_code
+          this.getPiece(res.data.data[0].category_code)
+        }
       })
     }
   }
@@ -197,6 +207,10 @@ export default {
   }
   .md-app-container {
     height: 100%;
+  }
+  .aside-button {
+    width: 100%;
+    text-align: center;
   }
 }
 </style>

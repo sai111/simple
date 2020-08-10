@@ -29,6 +29,13 @@
       <el-button class="md-raised" @click="saveScreen()">保存</el-button>
     </div>
   </el-dialog>
+  <!-- 文档和配置 -->
+  <el-drawer
+    :title="drawerTitle"
+    :visible.sync="drawerFlag"
+    :with-header="false">
+    <span>{{ drawerTitle }}!</span>
+</el-drawer>
 </div>
 </template>
 <script>
@@ -53,13 +60,15 @@ export default {
       ],
       screenScr: null,
       pieceDialog: false,
-      pieceTip: ''
+      pieceTip: '',
+      drawerFlag: false,
+      drawerTitle: ''
     }
   },
   computed: {
     temp() {
       this.pieceTip = this.pieceObj.title + '组件截图'
-      let comp = () => import(`@/packages/${this.pieceObj.category_code}/${this.pieceObj.title}/entry.vue`)
+      let comp = () => import(`@/packages/${this.pieceObj.category_code}/${this.pieceObj.en}/entry.vue`)
       return comp
     }
   },
@@ -104,8 +113,14 @@ export default {
         })
       })
     },
-    formatConfig() {},
-    openMarkdown() {},
+    formatConfig(item) {
+      this.drawerTitle = item.name
+      this.drawerFlag = !this.drawerFlag
+    },
+    openMarkdown(item) {
+      this.drawerTitle = item.name
+      this.drawerFlag = !this.drawerFlag
+    },
     closePiece() {
       this.$router.replace('/')
     },

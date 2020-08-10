@@ -1,7 +1,7 @@
 <template>
     <div class="arcPath-entry">
        arcPath组件
-        <arcPath />
+        <arcPath :svg-ready="svgReady" />
     </div>
 </template>
 <script>
@@ -10,11 +10,19 @@ export default {
     name: 'arcPathEntry',
     components: { arcPath },
     data() {
-        return {}
+        return {
+            svgReady: false,
+            arcConfig: {
+                width: 1290,
+                height: 1000
+            }
+        }
     },
     computed: {},
     watch: {},
-    mounted() {},
+    mounted() {
+        this.svgReady = true
+    },
     methods: {}
 }
 </script>

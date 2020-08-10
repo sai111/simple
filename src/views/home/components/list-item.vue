@@ -2,7 +2,7 @@
   <div class="category-list">
     <div class="category-list-item">
       <div class="category-button" @click="$emit('categoryClick', item)">
-        {{item.title || item.en}}
+        {{item.category_code}}
       </div>
       <div class="category-list-group">
         <i class="el-icon-edit" @click="editCategory('update', item)" />

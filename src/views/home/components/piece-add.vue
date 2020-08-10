@@ -37,9 +37,9 @@ export default {
   mixins: [],
   data() {
     const validateTitle = (rules, value, callback) => {
-      let reg = /^[A-Z_]{1,}$/
+      let reg = /^[a-zA-Z_]{1,}$/
       if (!reg.test(value)) {
-        callback(new Error('作品的英文名由大写英文字母、下划线组成'))
+        callback(new Error('作品的英文名由大小写英文字母、下划线组成'))
       } else {
         callback()
       }
@@ -61,7 +61,7 @@ export default {
       rules: {
         title: [
           {required: true, message: `为分类${this.isAdd ? '添加' : '修改'}一个英文名`, trigger: 'blur'},
-          {validator: validateTitle, message: '作品的英文名由大写英文字母、下划线组成'}
+          {validator: validateTitle, message: '作品的英文名由大小写英文字母、下划线组成'}
         ],
         en: [
           {required: true, message: `为分类${this.isAdd ? '添加' : '修改'}一个英文名`, trigger: 'blur'},
@@ -93,7 +93,7 @@ export default {
      * type: 类型,会当作参数进行传递
      */
     activateForm(dialogTitle, obj = {}, type = null) {
-      this.categoryType = type
+      this.pieceType = type
       this.openDialog()
       this.title = dialogTitle
       if (!this.isAdd) this.id = obj._id
@@ -127,6 +127,7 @@ export default {
     },
     save() {
       let param = Object.assign({}, this.form)
+      param.category_code = this.pieceType
       if (!this.isAdd) {
         param._id = this.id
       }

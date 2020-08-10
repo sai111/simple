@@ -1,7 +1,7 @@
 <template>
 <div class="md-layout home-piece-list">
   <div class="home-piece-list-block md-layout-item">
-    <div class="piece-content" @click="addDialog">
+    <div class="piece-content" @click="addDialog({}, true)">
       <div class="piece-content-add">+</div>
     </div>
   </div>
@@ -11,15 +11,19 @@
     class="home-piece-list-block"
     @click="openPiece(item, index)">
     <div class="piece-content">
+      <div class="piece-btn">
+        <i class="el-icon-edit" @click.stop="addDialog(item, false)" />
+        <i class="el-icon-delete" @click.stop="deletePiece(item)" />
+      </div>
       <div class="piece-content-title">
-        {{ item.title }}
+        {{ item.title || item.name }}
       </div>
       <div class="piece-content-des">
         {{ item.desc }}
       </div>
     </div>
   </div>
-   <home-piece-add ref="piece-add-dialog" />
+   <home-piece-add ref="piece-add-dialog" :is-add="isAdd" @cateAddSuccess="cateAddSuccess" />
 </div>
 </template>
 <script>
@@ -38,26 +42,62 @@ export default {
   },
   components: { HomePieceAdd },
   data() {
-    return {}
+    return {
+      isAdd: null
+    }
   },
   mounted() {},
   methods: {
-    addDialog() {
+    addDialog(form = {}, flag) {
       let addForm = {
-        en: '',
         name: '',
         desc: '',
         tag: '',
         title: '',
-        img: ''
+        img: '',
+        en: ''
       }
-      this.$refs['piece-add-dialog'].activateForm('创建一个作品', addForm, this.pieceType)
+      if (!flag) {
+        addForm = {
+          en: form.en,
+          name: form.name,
+          desc: form.desc,
+          tag: form.tag,
+          title: form.title,
+          img: form.img,
+          _id: form._id,
+          category_code: form.category_code
+        }
+      }
+      this.isAdd = flag
+      this.$refs['piece-add-dialog'].activateForm(`${flag?'创建':'修改'}一个作品`, addForm, this.pieceType)
     },
-    openPiece(item, index) {
+    openPiece(item) {
       let obj = {
-        pieceType: this.pieceType
+        pieceType: item.category_code
       }
       this.$router.replace({name: 'ViewPiece', params: Object.assign({}, obj, item)})
+    },
+    cateAddSuccess() {
+      this.$emit('pieceSuccess')
+    },
+    deletePiece(item) {
+      this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$message({message: '删除成功', type: 'success'})
+        this.$http({
+          method: 'POST',
+          url: '/api/collect/delete',
+          data: {_id: item._id}
+        }).then(() => {
+          this.cateAddSuccess()
+        })
+      }).catch(() => {
+        this.$message('已取消删除')
+      })
     }
   }
 }
@@ -71,19 +111,18 @@ export default {
   overflow: auto;
   &-block {
     position: relative;
-    width: 100%;
+    width: 250px;
+    height: 150px;
+    box-sizing: border-box;
     transform-style: preserve-3d;
     perspective: 800px;
     margin: 0 15px 15px 0;
-    flex-basis: calc(24% - 15px);
-    flex-grow: 0;
-    flex-shrink: 24;
     &:nth-child(4n + 4) {
       margin-right: 0;
     }
     .piece-content {
-      width: 250px;
-      height: 150px;
+      width: 100%;
+      height: 100%;
       padding: 10px;
       box-sizing: border-box;
       vertical-align: middle;
@@ -95,7 +134,23 @@ export default {
       overflow: hidden;
       cursor: pointer;
       backface-visibility: hidden;
-      transition: box-shadow 135ms 0ms cubic-bezier(0.4, 0, 0.2, 1);
+      transition: box-shadow 135ms 0ms cubic-bezier(0.4, 0, 0.2, 1), opacity .2s ease;
+      .piece-btn {
+        text-align: right;
+        opacity: 0;
+        .el-icon-edit {
+          margin-right: 10px;
+        }
+        .el-icon-right,
+        .el-icon-delete {
+          cursor: pointer;
+        }
+      }
+      &:hover {
+        .piece-btn {
+          opacity: 1;
+        }
+      }
       .piece-content-add {
         width: 100%;
         height: 100%;
@@ -107,7 +162,7 @@ export default {
       }
       .piece-content-title {
         width: 100%;
-        height: 60%;
+        height: 40%;
         font-size: 20px;
         line-height: 30px;
         text-align: center;

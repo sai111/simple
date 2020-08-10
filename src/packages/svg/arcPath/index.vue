@@ -1,5 +1,5 @@
 <template>
-    <div class="arcPath">
+    <div ref="arcPath" class="arcPath">
         <svg
             version="1.1"
             xmlns="http://www.w3.org/2000/svg"
@@ -13,7 +13,6 @@
             <line x1="0" :y1="centerY" :x2="width" :y2="centerY" stroke="#ccc" class="guide-line" />
             <line :x1="centerX" y1="0" :x2="centerX" :y2="height" stroke="#ccc" class="guide-line" />
             <path :d="drawPath()" stroke="red" fill="none" />
-
         </svg>
     </div>
 </template>
@@ -28,6 +27,10 @@ export default {
         width: {
             type: [Number, String],
             default: '100%'
+        },
+        svgReady: {
+            type: Boolean,
+            default: false
         }
     },
     data() {
@@ -65,10 +68,19 @@ export default {
             return percent.replace('%', '')
         },
         drawPath() {
+            // let domEle = this.$refs.arcPath
+            // console.log(domEle, 'domEle=111')
             // let mPoint = `M${0},${this.height - 90}`
             // 贝兹曲线 C300,350 500,250 5600,100 700,200
             // let cPoint = `C${0}, ${this.height - 40} ${500},${320} ${1200},${240} ${1900},${130}`
-            return `M${-90} ${400} C${534},${59} ${380},${500} ${1200},${120}`
+            let resultPath
+            let domWidth = 1920
+            if (this.svgReady) {
+                let domEle = this.$refs.arcPath
+                domWidth = domEle.getBoundingClientRect().width
+                resultPath = `M${-90} ${this.height} C${domWidth / 3},${this.height / 10} ${domWidth / 4},${this.height * 4 / 3} ${domWidth},${this.height * 2 / 5}`
+            }
+            return `M${-90} ${this.height} C${domWidth / 3},${this.height / 10} ${domWidth / 4},${this.height * 4 / 3} ${domWidth},${this.height * 2 / 5}`
         }
     }
 }

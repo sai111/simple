@@ -37,9 +37,9 @@ export default {
   mixins: [],
   data() {
     const validateTitle = (rules, value, callback) => {
-      let reg = /^[A-Z_]{1,}$/
+      let reg = /^[a-zA-Z_]{1,}$/
       if (!reg.test(value)) {
-        callback(new Error('作品的英文名由大写英文字母、下划线组成'))
+        callback(new Error('作品的英文名由大小写英文字母、下划线组成'))
       } else {
         callback()
       }
@@ -123,7 +123,7 @@ export default {
       }
       this.$http({
         method: 'POST',
-        url: `/api/collect/${this.isAdd ? 'add': 'update'}`,
+        url: `/api/category/${this.isAdd ? 'add': 'update'}`,
         data: param
       }).then((res) => {
         this.showDialog = false
