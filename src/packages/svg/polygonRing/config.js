@@ -24,6 +24,15 @@ export const polygonConfig = {
       type: [String, Number],
       default: 100
   },
+  title: {
+    type: [Object, Array],
+    default: {
+        x: 0,
+        y: 40,
+        fontSize: 50,
+        textAnchor: 'middle'
+    }
+  },
   startAngle: {
       type: Number,
       default: 0
@@ -74,7 +83,11 @@ export const polygonConfig = {
     type: [Object, Array],
     default: {
         color: '#33bbff',
-        opacity: 1
+        opacity: 1,
+        x: 0,
+        y: -20,
+        fontSize: 64,
+        textAnchor: 'middle'
     }
   },
   // 阴影等级，从【0-3】越高阴影越深，层级越丰富

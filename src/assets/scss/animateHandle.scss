@@ -1,3 +1,13 @@
+@mixin generate-slideupY ($opacity: 0, $translateY: 0) {
+  opacity: $opacity;
+  transform: translateY($translateY);
+}
+
+@mixin generate-slideupX ($opacity: 0, $translateX: 0) {
+  opacity: $opacity;
+  transform: translateX($translateX);
+}
+
 .animate_slideY_enter {
   @include generate-slideupY(1, 0)
 }
@@ -31,32 +41,13 @@
 
 // 左移样式
 .animate_slideX_enter {
-  @keyframes slideLeft {
-    from {
-      opacity: 0;
-      transform: translateX(-40%);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
+  .dot_animate_slideupX40 {
+    opacity: 0;
+    transform: translateX(-40px);
+    animation: slideLeft 0.3s cubic-bezier(0.42,0,0.58,1) forwards;
   }
 }
-.dot_animate_slideupX40 {
-  opacity: 0;
-  transform: translateX(-40px);
-  animation: slideLeft 0.3s cubic-bezier(0.42,0,0.58,1) forwards;
-}
 
-@mixin generate-slideupY ($opacity: 0, $translateY: 0) {
-  opacity: $opacity;
-  transform: translateY($translateY);
-}
-
-@mixin generate-slideupX ($opacity: 0, $translateX: 0) {
-  opacity: $opacity;
-  transform: translateX($translateX);
-}
 [class*='dot_animate'] {
   opacity: 0;
   transition-property: all;
@@ -68,4 +59,15 @@
 }
 .dot_animate_banner {
   transition: all 1.2s;
+}
+
+@keyframes slideLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-40%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }

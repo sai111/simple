@@ -18,7 +18,7 @@ export default {
                 innerRadius: 120,
                 startAngle: 0,
                 lightAngle: 14,
-                value: Math.random() * 100,
+                value: 84,
                 sum: 100,
                 valueFormat: 'percent',
                 sideNum: 0,
@@ -32,7 +32,17 @@ export default {
                 },
                 valueFill: {
                     color: '#33bbff',
-                    opacity: 1
+                    opacity: 1,
+                    x: 0,
+                    y: -10,
+                    fontSize: 64,
+                    textAnchor: 'middle'
+                },
+                title: {
+                    x: 0,
+                    y: 40,
+                    fontSize: 45,
+                    textAnchor: 'middle'
                 }
             },
             visualMap: [
