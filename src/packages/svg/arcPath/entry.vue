@@ -1,7 +1,7 @@
 <template>
     <div class="arcPath-entry">
        arcPath组件
-        <arcPath :svg-ready="svgReady" />
+        <arcPath :svg-ready="svgReady" :arc-config="arcConfig" />
     </div>
 </template>
 <script>
@@ -14,7 +14,14 @@ export default {
             svgReady: false,
             arcConfig: {
                 width: 1290,
-                height: 1000
+                height: 1000,
+                strokeWidth: 1,
+                strokeColor: '#04A7F9',
+                fillColor: [
+                    {value: 60, color: '#04A7F9'},
+                    {value: 80, color: '#FDEA00'},
+                    {value: 100, color: '#fd4000'}
+                ]
             }
         }
     },

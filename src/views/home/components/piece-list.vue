@@ -106,13 +106,15 @@ export default {
 .home-piece-list {
   width: 100%;
   height: 100%;
-  display: flex;
-  flex-wrap: wrap;
+  // display: flex;
+  // flex-wrap: wrap;
   overflow: auto;
   &-block {
+    float: left;
     position: relative;
     width: 250px;
     height: 150px;
+    display: inline-block;
     box-sizing: border-box;
     transform-style: preserve-3d;
     perspective: 800px;

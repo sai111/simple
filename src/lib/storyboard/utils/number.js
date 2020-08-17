@@ -75,6 +75,10 @@ export const formatNum = function(num, max) {
   return {
   	num: newNum,
     unit: unit,
-    decimalLen: len // 小数点位符，谨慎使用
+    decimalLen: len, // 小数点位符，谨慎使用
   }
+}
+
+export const formatPercent = function(num, sum) {
+  return Math.round(parseInt(num) / sum * 10000) / 100 + '%'
 }

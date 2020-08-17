@@ -1,0 +1,71 @@
+.animate_slideY_enter {
+  @include generate-slideupY(1, 0)
+}
+.animate_slideY_leave {
+  @include generate-slideupY(0, 110)
+}
+
+.animate_slideY_enter {
+  [class*='dot_animate_slideupY'] {
+    @include generate-slideupY(1, 0)
+  }
+}
+
+.animate_slideY_list_leave {
+  [class*='dot_animate'] {
+    transition-delay: 0s!important;
+  }
+  .dot_animate_slideupY {
+    @include generate-slideupY(0, 110)
+  }
+  .dot_animate_slideupY200 {
+    @include generate-slideupY(0, 200)
+  }
+  .dot_animate_slideupY400 {
+    @include generate-slideupY(0, 400)
+  }
+  .dot_animate_slideupY550 {
+    @include generate-slideupY(0, 550)
+  }
+}
+
+// 左移样式
+.animate_slideX_enter {
+  @keyframes slideLeft {
+    from {
+      opacity: 0;
+      transform: translateX(-40%);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+}
+.dot_animate_slideupX40 {
+  opacity: 0;
+  transform: translateX(-40px);
+  animation: slideLeft 0.3s cubic-bezier(0.42,0,0.58,1) forwards;
+}
+
+@mixin generate-slideupY ($opacity: 0, $translateY: 0) {
+  opacity: $opacity;
+  transform: translateY($translateY);
+}
+
+@mixin generate-slideupX ($opacity: 0, $translateX: 0) {
+  opacity: $opacity;
+  transform: translateX($translateX);
+}
+[class*='dot_animate'] {
+  opacity: 0;
+  transition-property: all;
+  transition-duration: 0.5s;
+  transition-timing-function: cubic-bezier(0.42,0,0.58,1);
+}
+.dot_animate {
+  transition: all 0.8s;
+}
+.dot_animate_banner {
+  transition: all 1.2s;
+}

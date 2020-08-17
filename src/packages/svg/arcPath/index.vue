@@ -31,6 +31,18 @@ export default {
         svgReady: {
             type: Boolean,
             default: false
+        },
+        strokeWidth: {
+            type: Number,
+            default: 400
+        },
+        strokeColor: {
+            type: [String, Array],
+            default: '#04A7F9'
+        },
+        fillColor: {
+            type: [String, Array],
+            default: '#04A7F9'
         }
     },
     data() {
