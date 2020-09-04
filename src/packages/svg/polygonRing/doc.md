@@ -1,4 +1,5 @@
 <!-- polygonRing文档 -->
+https://www.jianshu.com/p/cfe9723637ee
 
 ### path绘制圆
 
@@ -10,3 +11,10 @@
     4. sweep-flag 是标记向顺时针(1)还是逆时针(0)方向绘制。
     5. x y 是圆弧终点的坐标
   ```
+
+
+  // 弧长公式
+  扇形的弧长=2πr×角度/360
+  
+### SVG过滤器用来给SVG图形添加特效
+  链接: https://www.techbrood.com/h5b2a?p=svg-filters_intro

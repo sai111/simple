@@ -26,7 +26,7 @@ export default class GLColor {
   _b = 0
   get b() {return this._b}
   set b(b) {
-    this._g = Math.round(b)
+    this._b = Math.round(b)
     this._b16 = this._b.toString(16)
     if (this._b16.length === 1) {
       this._b16 = '0' + this._b16
@@ -226,7 +226,6 @@ export default class GLColor {
     return familyColor
   }
 }
-
 let lerpColor = new GLColor()
 GLColor.lerp = function(GLColor1, GLColor2, t) {
   lerpColor.set({

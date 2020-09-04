@@ -401,6 +401,7 @@
       );
       curr_txt.textContent =
         (i + '*' + a_base).slice(0, 7) + '°';
+        console.log((i + '*' + a_base).slice(0, 7), 'text-----angle', q)
       curr_txt.setAttrs({
         'x': x + 2 * V_RADIUS * pow(-1, j2 ^ j1),
         'y': y + 2 * V_RADIUS * pow(-1, j1),
@@ -453,6 +454,7 @@
     }
 
     a += DEG_MOTION_SPEED;
+    console.log(a, 'DEG_MOTION_SPEED', DEG_MOTION_SPEED)
     stepDisplay();
 
     r_id = requestAnimationFrame(updateAngle);

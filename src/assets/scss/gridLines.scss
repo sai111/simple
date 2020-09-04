@@ -1,0 +1,8 @@
+.gridLines {
+  background:
+    linear-gradient(silver .125em, transparent .125em) 0 calc(50vh - .0625em),
+    linear-gradient(90deg, silver .125em, transparent .125em) calc(50vw - .0625em) 0,
+    linear-gradient(gainsboro .0625em, transparent .0625em) 0 50vh,
+    linear-gradient(90deg, gainsboro .0625em, transparent .025em) 50vw 0;
+  background-size: 100% 7.5em, 7.5em 100%, 100% .75em, .75em 100%;
+}

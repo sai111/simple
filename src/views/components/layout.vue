@@ -3,7 +3,7 @@
   <!-- 导航 -->
   <el-container class="app-nav">
     <el-header color="primary">
-      <div class="layout-nav">default</div>
+      <div class="layout-nav">追影</div>
       <div class="layout-list">
         <div
           class="layout-list-li"

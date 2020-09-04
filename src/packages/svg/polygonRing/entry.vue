@@ -18,10 +18,10 @@ export default {
                 innerRadius: 120,
                 startAngle: 0,
                 lightAngle: 14,
-                value: 84,
+                value: Math.random() * 100,
                 sum: 100,
                 valueFormat: 'percent',
-                sideNum: 0,
+                sideNum: 3,
                 lightConfig: {
                     duration: 9,
                     delay: 0
@@ -39,9 +39,10 @@ export default {
                     textAnchor: 'middle'
                 },
                 title: {
+                    text: '测试文本',
                     x: 0,
                     y: 40,
-                    fontSize: 45,
+                    fontSize: 20,
                     textAnchor: 'middle'
                 }
             },

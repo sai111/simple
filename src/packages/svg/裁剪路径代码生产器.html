@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Clip Path Generator</title>
+    <meta name="description" content="Clip Path (Mask) CSS code generator is very useful tool you can use to create CSS masking on your page. You can create any CSS clip path code just with your mouse without any coding." />
+    <link href='https://fonts.useso.com/css?family=Open+Sans:400italic,600italic,700italic,400,600,700' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.useso.com/css?family=Gudea:400,700' rel='stylesheet' type='text/css'>
+
+    <link rel="stylesheet" href="/libs/jquery/jquery.fancybox.css?v=2.1.5" type="text/css" media="screen" />
+
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="/uploads/141102/spectrum.css">
+    <link rel="stylesheet" type="text/css" href="/uploads/141102/clip-path-generator.css">
+    <style>
+      /* =Reset
+-------------------------------------------------------------- */
+/* 链接：https://wow.techbrood.com/fiddle/2825 */
+
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+}
+body {
+    line-height: 1;
+    margin-bottom: 60px;
+}
+ol,
+ul {
+    list-style: none;
+}
+blockquote,
+q {
+    quotes: none;
+}
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+    content: '';
+    content: none;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+caption,
+th,
+td {
+    font-weight: normal;
+    text-align: left;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    clear: both;
+}
+html {
+    overflow-y: scroll;
+    font-size: 100%;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+}
+a:focus {
+    outline: thin dotted;
+}
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+nav,
+section {
+    display: block;
+}
+audio,
+canvas,
+video {
+    display: inline-block;
+}
+audio:not([controls]) {
+    display: none;
+}
+del {
+    color: #333;
+}
+ins {
+    background: #fff9c0;
+    text-decoration: none;
+}
+hr {
+    background-color: #ccc;
+    border: 0;
+    height: 1px;
+    margin: 24px;
+    margin-bottom: 1.71429rem;
+}
+sub,
+sup {
+    font-size: 75%;
+    line-height: 0;
+    position: relative;
+    vertical-align: baseline;
+}
+sup {
+    top: -0.5em;
+}
+sub {
+    bottom: -0.25em;
+}
+small {
+    font-size: smaller;
+}
+img {
+    border: 0;
+    -ms-interpolation-mode: bicubic;
+}
+.clr,
+.clear:after,
+.wrapper:after,
+.format-status .entry-header:after {
+    clear: both;
+}
+.clear:before,
+.clear:after,
+.wrapper:before,
+.wrapper:after,
+.format-status .entry-header:before,
+.format-status .entry-header:after {
+    display: table;
+    content: "";
+}
+body {
+    -webkit-transform: translate3d(0, 0, 0);
+    -webkit-backface-visibility: hidden;
+    position: absolute;
+    left: 0;
+    top: 0;
+    min-height: 100%;
+    width: 100%;
+    background: #f9f9f9;
+}
+body,
+input {
+    font-family: 'Open Sans', sans-serif;
+}
+#top-menu-wrap {
+    padding: 5px 10px 0;
+    border-bottom: 2px solid #49494b;
+}
+#top-menu {
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+#logo {
+    display: inline-block;
+    width: 55px;
+    height: 48px;
+    background: url(http://cssplant.com/css/images/logo.png) no-repeat;
+    float: left;
+}
+#main-menu {
+    float: left;
+    margin-top: 24px;
+}
+h1 {
+    font-family: 'Gudea', sans-serif;
+}
+#main-menu a {
+    color: #fff;
+    text-decoration: none;
+    text-shadow: 1px 0px 2px #000;
+    display: inline-block;
+    margin-left: 20px;
+    font-family: 'Gudea', sans-serif;
+    text-transform: uppercase;
+    font-size: 16px;
+    float: left;
+    position: relative;
+    background: #49494b;
+    padding: 4px 10px;
+    -webkit-border-top-left-radius: 4px;
+    -webkit-border-top-right-radius: 4px;
+    -moz-border-radius-topleft: 4px;
+    -moz-border-radius-topright: 4px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+.beta-label {
+    position: absolute;
+    font-size: 12px;
+    color: #f00;
+    right: 0;
+    top: -14px;
+    text-shadow: none;
+    text-transform: none;
+}
+h1 {
+    font-size: 14px;
+    text-transform: uppercase;
+}
+#content {
+    margin: 20px 20px 80px;
+}
+#main {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+#main-menu a.active,
+#main-menu a:hover {
+    color: #ffa500;
+}
+#logo:hover {
+    opacity: 0.9;
+}
+.plant-roof {
+    position: absolute;
+    left: 8px;
+    top: -22px;
+    width: 45px;
+    height: 22px;
+    background: url(http://cssplant.com/css/images/plantroof.png) no-repeat;
+    display: none;
+}
+#main-menu a:hover .plant-roof {
+    display: block;
+}
+footer {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+}
+#footer-content {
+    margin: 0 auto;
+    max-width: 1200px;
+}
+footer a,
+footer {
+    font-size: 12px;
+    color: #999;
+}
+#footer-copy {
+    display: inline-block;
+    margin-right: 20px;
+}
+#footer-menu {
+    text-align: center;
+    display: inline-block;
+    margin-right: 80px;
+}
+#footer-menu a {
+    font-size: 13px;
+    color: #333;
+    display: inline-block;
+    margin-right: 10px;
+}
+#socials {
+    display: inline-block;
+    margin-left: 20px;
+    vertical-align: middle;
+}
+#code-results {
+    margin-top: 30px;
+}
+.code-result {
+    float: left;
+    margin-right: 30px;
+}
+.tool-row {
+    margin-bottom: 10px;
+}
+#side-tools-panel {
+    position: absolute;
+    right: 0;
+    width: 190px;
+    top: 55px;
+    background: #29292b;
+    padding: 10px;
+    color: #fff;
+}
+#side-tools-panel h1 {
+    text-align: center;
+}
+#side-tools-panel a {
+    color: #fff;
+    text-decoration: none;
+}
+#top-tools-panel {
+    margin-bottom: 20px;
+}
+.tt-button {
+    outline: none;
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    padding: 4px;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border: 1px solid #dcdcdc;
+    text-decoration: none;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(5%, #ededed), color-stop(100%, #dfdfdf));
+    background: -moz-linear-gradient(center top, #ededed 5%, #dfdfdf 100%);
+    background: -ms-linear-gradient(top, #ededed 5%, #dfdfdf 100%);
+    filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#ededed', endColorstr='#dfdfdf');
+    background-color: #ededed;
+    color: #777;
+    -webkit-box-shadow: inset 1px 1px 0px 0px #fff;
+    -moz-box-shadow: inset 1px 1px 0px 0px #fff;
+    box-shadow: inset 1px 1px 0px 0px #fff;
+    margin-right: 6px;
+    vertical-align: top;
+}
+.tt-button:hover {
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(5%, #dfdfdf), color-stop(100%, #ededed));
+    background: -moz-linear-gradient(center top, #dfdfdf 5%, #ededed 100%);
+    background: -ms-linear-gradient(top, #dfdfdf 5%, #ededed 100%);
+    filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#dfdfdf', endColorstr='#ededed');
+    background-color: #dfdfdf;
+}
+.tt-button.active {
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(5%, #dfdfdf), color-stop(100%, #cfcfcf));
+    -webkit-box-shadow: inset 0px 0px 0px 1px #fff;
+    -moz-box-shadow: inset 0px 0px 0px 1px #fff;
+    box-shadow: inset 0px 0px 0px 1px #fff;
+    border: 1px solid #ffa500;
+}
+#next-marker-lnk:before,
+#prev-marker-lnk:before,
+#remove-marker-lnk:before,
+#help-btn:before,
+#use-bg-color-btn:before,
+#apply-mask-btn:before,
+#show-markers-btn:before,
+#reset-lnk:before,
+#pen-selection-lnk:before,
+#lines-selection-lnk:before {
+    opacity: 0.8;
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+}
+#pen-selection-lnk:before {
+    content: "";
+    background: url(http://cssplant.com/css/images/lasso-btn.png) no-repeat center center;
+}
+#lines-selection-lnk:before {
+    content: "";
+    background: url(http://cssplant.com/css/images/polygonal-btn.png) no-repeat center center;
+}
+#reset-lnk:before {
+    content: "";
+    background: url(http://cssplant.com/css/images/reset-btn.png) no-repeat center center;
+}
+#show-markers-btn:before {
+    content: "";
+    background: url(http://cssplant.com/css/images/markers-btn.png) no-repeat center center;
+}
+#apply-mask-btn:before {
+    content: "";
+    background: url(http://cssplant.com/css/images/cut-btn.png) no-repeat center center;
+}
+#use-bg-color-btn:before {
+    content: "";
+    background: url(http://cssplant.com/css/images/image-btn.png) no-repeat center center;
+}
+#help-btn:before {
+    content: "";
+    background: url(http://cssplant.com/css/images/help-btn.png) no-repeat center center;
+}
+#remove-marker-lnk:before {
+    content: "";
+    background: url(http://cssplant.com/css/images/remove-marker.png) no-repeat center center;
+}
+#next-marker-lnk:before {
+    content: "";
+    background: url(http://cssplant.com/css/images/next-btn.png) no-repeat center center;
+}
+#prev-marker-lnk:before {
+    content: "";
+    background: url(http://cssplant.com/css/images/prev-btn.png) no-repeat center center;
+}
+.drop-down-item {
+    position: relative;
+    width: auto;
+    cursor: pointer;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.drop-down-menu {
+    position: absolute;
+    top: 0px;
+    margin-top: 32px;
+    left: 0;
+    display: none;
+    background: #49494b;
+    z-index: 3;
+    -webkit-border-bottom-right-radius: 5px;
+    -webkit-border-bottom-left-radius: 5px;
+    -moz-border-radius-bottomright: 5px;
+    -moz-border-radius-bottomleft: 5px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+.drop-down-menu a {
+    display: block;
+    padding: 8px 14px;
+    text-decoration: none;
+    color: #fff;
+    font-size: 13px;
+}
+.drop-down-menu a:hover {
+    color: #ffa500;
+    background: #29292b;
+}
+#clip-example {
+    width: 100%;
+}
+.ddi-label {
+    position: relative;
+    top: 8px;
+    color: #333;
+}
+.drop-down-item:hover .drop-down-menu {
+    display: block;
+}
+div.sp-replacer {
+    padding: 9px 5px;
+    vertical-align: top;
+}
+#fancy-help {
+    width: 700px;
+    font-size: 15px;
+    line-height: 20px;
+}
+#fancy-help li {
+    margin-bottom: 10px;
+}
+#fancy-help h2 {
+    font-size: 22px;
+    margin-bottom: 15px;
+}
+.generator-face {
+    background: #49494b;
+    border: 1px solid #ddd;
+}
+.generator-face:hover {
+    background: #29292b;
+    border: 1px solid #777;
+}
+.generator-face {
+    width: 300px;
+    margin-right: 20px;
+    float: left;
+}
+.generator-face h2 {
+    text-align: center;
+    font-family: 'Gudea', sans-serif;
+    font-weight: normal;
+}
+.generator-face h2 a {
+    text-decoration: none;
+    color: #fff;
+    text-shadow: 1px 0px 2px #000;
+    padding: 10px 0;
+    display: block;
+}
+.generator-face:hover a {
+    color: #ffa500;
+}
+.input-label {
+    display: inline-block;
+    width: 80px;
+}
+#page-title {
+    font-size: 38px;
+    margin-bottom: 20px;
+}
+#page {
+    font-size: 15px;
+    line-height: 20px;
+    color: #222;
+}
+#page p {
+    margin-bottom: 15px;
+}
+.form-row {
+    margin-bottom: 10px;
+}
+
+
+    </style>
+</head>
+
+<body>
+    <header id="top-menu-wrap">
+        <div id="top-menu">
+            <a href="/" id="logo"></a>
+
+            <nav id="main-menu">
+                <a href="/clip-path-generator" class="active">
+                    <span class="plant-roof"></span> Clip path
+                    <span class="beta-label">beta</span>
+                </a>
+                <a href="https://cssanimate.com">
+                    <span class="plant-roof"></span> Animation
+                </a>
+                <a href="/border-radius-generator">
+                    <span class="plant-roof"></span> Border radius
+                    <span class="beta-label">beta</span>
+                </a>
+
+            </nav>
+
+            <div class="clr"></div>
+        </div>
+    </header>
+    <div id="content">
+
+        <div id="main">
+            <div id="side-tools-panel">
+                <h1>Clip Path (Mask) Generator</h1>
+            </div>
+
+            <div id="top-tools-panel">
+                <a href="javascript:;" id="pen-selection-lnk" class="tt-button tt-icon" title="Lasso selection"></a>
+                <a href="javascript:;" id="lines-selection-lnk" class="tt-button tt-icon" title="Polygonal lasso selection"></a>
+                <a href="javascript:;" id="reset-lnk" class="tt-button tt-icon" title="Reset"></a>
+                &nbsp;
+                <a href="javascript:;" id="show-markers-btn" class="tt-button tt-icon active" title="Show/hide markers"></a>
+                <a href="javascript:;" id="apply-mask-btn" class="tt-button tt-icon active" title="Apply mask"></a>
+                &nbsp;
+                <a href="javascript:;" id="use-bg-color-btn" class="tt-button tt-icon active" title="Use image/background color"></a>
+                <input type="text" id="color-p" value="#ECC" /> &nbsp; &nbsp;
+                <span class="drop-down-item tt-button">
+         <span class="ddi-label">Examples &#x25BE;</span>
+                <span class="drop-down-menu" id="clip-example">
+           <a href="javascript:;" data-value="4side-polygon">Four sides</a>     	
+   	       <a href="javascript:;" data-value="triangle">Triangle</a>
+   	       <a href="javascript:;" data-value="rhomb">Rhomb</a>  
+         </span>
+
+                </span>
+
+                <a href="#inline-help" id="help-btn" class="tt-button tt-icon" title="Help/Guide"></a>
+
+                <span id="selected-marker-block">
+    
+    <span id="positions-col-block">
+    <strong>Selected marker:</strong>
+    
+    Left <input type="text" name="selected-marker-left" class="position-input" id="selected-marker-left" value="" />
+    &nbsp;
+    Top <input type="text" name="selected-marker-top" class="position-input" id="selected-marker-top" value="" />
+    </span>
+
+                <a href="javascript:;" id="remove-marker-lnk" class="tt-button  tt-icon" title="Remove marker"></a>
+                <a href="javascript:;" id="prev-marker-lnk" class="tt-button  tt-icon" title="Previous marker"></a>
+                <a href="javascript:;" id="next-marker-lnk" class="tt-button  tt-icon" title="Next marker"></a>
+                </span>
+
+            </div>
+
+            <div id="working-area">
+                <div id="preview-img-wrap" ondragover="return false;">
+                    <img id="preview-img" src="/assets/love.jpg" />
+                    <span id="clip-circle"></span>
+                </div>
+
+                <div style="position:relative;">
+                    <div id="coordinates-corner">
+                        X:<span id="x-coord-lb">0</span> &nbsp; Y:
+                        <span id="y-coord-lb">0</span>
+                    </div>
+                </div>
+
+                <div id="clip-path-notice">
+                    Notice:
+                    <br /> Start selection by clicking lasso or polygonal lasso button and draw path on image area.
+                    <br /> You can drag your image into this area.
+                </div>
+            </div>
+
+
+            <div id="code-results">
+                <div style="padding-bottom:10px;">
+                    Embeding code type:
+                    <label>
+                        <input type="radio" name="code-type" value="inline" checked="checked"> Inline
+                    </label>
+                    &nbsp;
+                    <label>
+                        <input type="radio" name="code-type" value="file"> File
+                    </label>
+                </div>
+                <div class="clr"></div>
+
+                <div id="inline-texts">
+                    <div class="code-result">
+                        CSS code:
+                        <br />
+                        <textarea id="code-text"></textarea>
+                    </div>
+                    <div class="code-result">
+                        Inline SVG ( put inside HTML code):
+                        <br />
+                        <textarea id="svg-text"></textarea>
+                    </div>
+                </div>
+
+                <div id="files-texts">
+                    <div class="code-result">
+                        CSS code:
+                        <br />
+                        <textarea id="file-code-text"></textarea>
+                    </div>
+                    <div class="code-result">
+                        SVG File (<a href="#" download="clip.svg" id="svg-file-download-lnk">download clip.svg</a>):
+                        <br />
+                        <textarea id="file-svg-text"></textarea>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div id="inline-help" style="display:none;">
+            <div id="fancy-help">
+
+                <h2>Quick guide</h2>
+                <ul>
+                    <li>You can <strong>use your image</strong> instead of default by <strong>dragging and drop your image</strong> into main working image area.</li>
+                    <li>You can select clipping area in two ways: Lasso or Polygonal lasso</li>
+                    <li>To lock clip selection with Polygonal lasso, you should click second time on last marker or put next marker near the most first marker</li>
+                    <li>You can <strong>disable image and use background color</strong>. To change background color use color picker tool</li>
+                    <li>You can easily <strong>reset</strong> selection</li>
+                    <li>You can <strong>hide/show markers</strong> if they interfere</li>
+                    <li>You can <strong>disable/enable clipping</strong>, in this case there will left only selectiong border</li>
+                    <li>You can <strong>add new marker</strong> into selection by clicking on edge when crosshair cursor is there</li>
+                    <li>You can <strong>select</strong> any marker by just clicking on it</li>
+                    <li>You can <strong>change</strong> selected <strong>marker position</strong> by dragging it across area</li>
+                    <li>You can <strong>edit</strong> lef/top position for selected marker. Also you can <strong>remove</strong> selected markery by clicking on <strong>Trash</strong> button or by using <strong>DELETE key</strong> on keyboard.</li>
+                    <li>To <strong>navigate</strong> between markers you can use <strong>Next/Prev</strong> buttons in marker section</li>
+                    <li>You can <strong>move</strong> you selection in place you want by dragging</li>
+                    <li>You can <strong>scale</strong> your selection</li>
+                    <li>You can <strong>rotate</strong> you selection</li>
+                </ul>
+            </div>
+        </div>
+
+        <svg width="0" height="0" xmlns="https://www.w3.org/2000/svg" version="1.1">
+            <clipPath id="clipPolygon">
+                <polygon id="clipPoints" points=""></polygon>
+            </clipPath>
+        </svg>
+        <div class="clr"></div>
+    </div>
+
+    <footer>
+        <div id="footer-content">
+            <div id="footer-copy">CSSPlant &copy; 2014 All Rights Reserved</div>
+        </div>
+    </footer>
+
+
+    <script type="text/javascript" src="/libs/jquery/jquery.1.8.1.js"></script>
+    <script type="text/javascript" src="/libs/jquery/jquery-ui.min.js"></script>
+
+    <script type="text/javascript" src="/libs/jquery/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+    <script type="text/javascript" src="/uploads/141102/spectrum.js"></script>
+    <script type="text/javascript" src="/uploads/141102/clip-path-generator.js"></script>
+
+</body>
+
+</html>

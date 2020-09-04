@@ -27,6 +27,7 @@ export const polygonConfig = {
   title: {
     type: [Object, Array],
     default: {
+        text: '测试文本',
         x: 0,
         y: 40,
         fontSize: 50,

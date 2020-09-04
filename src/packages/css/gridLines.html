@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    html {
+      height: 100%;
+      background:
+        linear-gradient(silver .125em, transparent .125em) 0 calc(50vh - .0625em),
+        linear-gradient(90deg, silver .125em, transparent .125em) calc(50vw - .0625em) 0,
+        linear-gradient(gainsboro .0625em, transparent .0625em) 0 50vh,
+        linear-gradient(90deg, gainsboro .0625em, transparent .025em) 50vw 0;
+      background-size: 100% 7.5em, 7.5em 100%, 100% .75em, .75em 100%;
+    }
+
+    html:before,
+    html:after {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      content: '';
+    }
+
+    html:before {
+      width: .375em;
+      height: .375em;
+      border-radius: 50%;
+      box-shadow: 0 0 1em .125em crimson;
+      background: deeppink;
+      animation: pulse 1s infinite;
+    }
+
+    html:after {
+      margin-top: 1.5em;
+      font: 700 1em trebuchet ms, century gothic, verdana, sans-serif;
+      animation: float 1s ease-out infinite alternate;
+      content: 'pink point/ gridline origin are in the middle'
+    }
+
+    @keyframes pulse {
+      to {
+        box-shadow: 0 0 1em .375em crimson;
+      }
+    }
+
+    @keyframes float {
+      to {
+        margin-top: 2em;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+</body>
+
+</html>

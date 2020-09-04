@@ -52,32 +52,54 @@
             <stop offset="99%" :stop-color="colorFamily[5]" stop-opacity="1" />
             <stop offset="100%" stop-color="#fff" stop-opacity="1" />
         </linearGradient>
-        <clipPath :id="`${timeScopd}-value-clip-path`">
+        <!-- <clipPath :id="`${timeScopd}-value-clip-path`">
             <path :d="drawPath(rate, true)" stroke="none" />
-        </clipPath>
+        </clipPath> -->
     </defs>
     <!-- 辅助线start -->
-    <!-- <line x1="0" :y1="centerY" :x2="width" :y2="centerY" stroke="#ccc" class="guide-line" />
-    <line :x1="centerX" y1="0" :x2="centerX" :y2="height" stroke="#ccc" class="guide-line" /> -->
-    <!-- <circle :cx="centerX" :cy="centerY" :r="outRadius" stroke="#ccc" fill="none" class="guide-circle" /> -->
-    <!-- <circle :cx="centerX" :cy="centerY" :r="innerRadius" stroke="#ccc" fill="none" class="guide-circle" /> -->
+    <line x1="0" :y1="centerY" :x2="width" :y2="centerY" stroke="#ccc" class="guide-line" />
+    <line :x1="centerX" y1="0" :x2="centerX" :y2="height" stroke="#ccc" class="guide-line" />
+    <circle :cx="centerX" :cy="centerY" :r="outRadius" stroke="#ccc" fill="none" class="guide-circle" />
+    <circle :cx="centerX" :cy="centerY" :r="innerRadius" stroke="#ccc" fill="none" class="guide-circle" />
+    <g class="text-group">
+        <text
+            v-for="(item, index) in textFormat"
+            :key="'text-group-li-'+index"
+            :x="item.x"
+            :y="item.y">
+            {{ item.text }}
+        </text>
+        <line
+          v-for="(item, index) in verticesFormat"
+          :key="'vertices-line-'+index"
+          :x1="centerX"
+          :y1="centerY"
+          :x2="item.x"
+          :y2="item.y"
+          stroke-width="2"
+          stroke-dasharray="8"
+          stroke="#ccc"
+        />
+    </g>
     <!-- <text :x="width-10" :y="centerY" fill="#000" class="guide-text">w</text>
     <text :x="centerX" :y="height" fill="#000" class="guide-text">h</text>
     <text :x="offsetRadiusX" :y="centerY" fill="#000" class="guide-text">o</text>
-    <text :x="ringWidth+offsetRadiusX" :y="centerY" fill="#000" class="guide-text">i</text>
-    <rect x="0" y="0" :width="width" :height="height" stroke="#000" fill="none" class="guide-rect" /> -->
+    <text :x="ringWidth+offsetRadiusX" :y="centerY" fill="#000" class="guide-text">i</text> -->
+    <rect x="0" y="0" :width="width" :height="height" stroke="#000" fill="none" class="guide-rect" />
     <!-- 辅助线end -->
+    <!-- colorFamily[0] -->
     <path
         class="polygon-ring"
-        stroke="none"
-        :fill="colorFamily[0]"
+        stroke="red"
+        stroke-width="10"
+        fill="none"
         :d="drawPath(1)"
         :filter="`url(#${timeScopd}-shadow)`"
     />
     <g class="gradient-group" :style="{'clip-path': `url(#${timeScopd}-value-clip-path)`}">
         <!-- <path stroke="blue" fill="none" :d="drawPath(rate, true)" /> -->
         <!-- 右上/右下/左下/左上 -->
-        <rect
+        <!-- <rect
            :x="centerX"
            :y="offsetRadiusY"
            :width="outRadius"
@@ -125,7 +147,7 @@
                 fill="freeze"
                 repeatCount="indefinite"
             />  
-        </rect>
+        </rect> -->
     </g>
     <!-- 文本 -->
     <g class="text">
@@ -136,7 +158,7 @@
             fill="#000"
             :text-anchor="title.textAnchor"
             :font-size="title.fontSize">
-            {{ formatValueText }}
+            {{ centerX + '*' + centerY }}
         </text>
         <text
             class="text-value"
@@ -154,6 +176,7 @@
 import { polygonConfig } from './config'
 import Color from '../../../lib/storyboard/utils/color.js'
 import VisualMap from '../../../lib/storyboard/utils/visualMap.js'
+import FloodStrorage from '../../../lib/storyboard/utils/floodStorage.js'
 export default {
     name: 'polygonRing',
     props: polygonConfig,
@@ -161,12 +184,19 @@ export default {
         return {
             timeScopd: (new Date()).getTime(),
             visualMapObj: null,
-            store: {value: 0}
+            store: {value: 0},
+            floodStorage: null
         }
     },
     computed: {
         viewBox() {
             return `0 0 ${this.width} ${this.height}`
+        },
+        degreen() {
+            return 360 / this.sideNum
+        },
+        rad_a_base() {
+            return Math.PI * 2 / this.sideNum
         },
         rate() {
             if (this.sum === 0 || this.store.value / this.sum < 0) {
@@ -176,9 +206,9 @@ export default {
         },
         visualFill() {
             if (this.visualMapObj) {
-                return this.visualMapObj.filter(this.store.value / this.sum * 100) || this.valueFill
+                return this.visualMapObj.filter(this.store.value / this.sum * 100) || this.valueFill.color
             } else {
-                return this.valueFill
+                return this.valueFill.color
             }
         },
         lightWidth() {
@@ -226,15 +256,41 @@ export default {
             return `${Math.floor(100 - this.ringWidth / this.outRadius * 100)}%`
         },
         formatValueText() {
-            if (this.valueFormat === 'percent') return Math.round(this.store.value / this.sum * 100) + '%'
-            if (this.valueFormat === 'divide') return Math.round(this.store.value) + '/' + this.sum
-            return Math.round(this.store.value)
+            if (this.valueFormat === 'percent') return Math.round(this.floodStorage.value / this.sum * 100) + '%'
+            if (this.valueFormat === 'divide') return Math.round(this.floodStorage.value) + '/' + this.sum
+            return Math.round(this.floodStorage.value)
+        },
+        textFormat() {
+            let result = []
+            for (let i = 0; i < this.sideNum; i++) {
+                const rad_a = i * this.rad_a_base
+                result[i] = {
+                    text: i + '*' + (' ' + this.degreen).slice(0, 5) + '°',
+                    x: this.centerX + Math.sin(rad_a) * this.outRadius + i * 10 * Math.sin(rad_a),
+                    y: this.centerY - Math.cos(rad_a) * this.outRadius - i * 10 * Math.cos(rad_a)
+                }
+            }
+            return result
+        },
+        // 辅助线-顶点虚线
+        verticesFormat() {
+            let result = []
+            for (let i = 0; i < this.sideNum; i++) {
+                const rad_a = i * this.rad_a_base
+                result[i] = {
+                    x: this.centerX + Math.sin(rad_a) * this.outRadius,
+                    y: this.centerY - Math.cos(rad_a) * this.outRadius
+                }
+            }
+            return result
         }
     },
     watch: {
         value: {
             handler(val) {
-                this.store.value = Math.min(Math.max(val, 0), this.sum)
+                if (this.floodStorage) {
+                    this.floodStorage.value = Math.min(Math.max(val, 0), this.sum)
+                }
             },
             immediate: true
         },
@@ -242,16 +298,32 @@ export default {
             this.initVisualMap()
         }
     },
+    created() {
+        this.floodStorage = new FloodStrorage(this.store, [
+            { key: 'value', speed: this.sum / 2 }
+        ])
+        // console.log(this.floodStorage, '0000', this.store, this.colorFamily)
+    },
     mounted() {
         if (this.value) {
-            this.store.value = Math.min(Math.max(this.value, 0), this.sum)
+            // this.store.value = Math.min(Math.max(this.value, 0), this.sum)
+            this.floodStorage.value = Math.min(Math.max(this.value, 0), this.sum)
         }
         this.initVisualMap()
     },
     beforeDestroy() {
         this.visualMapObj = null
+        this.floodStorage.destroy()
+        this.floodStorage = null
     },
     methods: {
+        camp(value, a, b) {
+            if (a < b) {
+                return Math.max(a, Math.min(b, value))
+            } else {
+                return Math.max(b, Math.min(a, value))
+            }
+        },
         initVisualMap() {
             if (!this.visualMap) {
                 if (this.visualMapObj) {
@@ -263,12 +335,59 @@ export default {
         },
         drawPath(rate = 1, isValue = false) {
             rate = rate - (isValue && !this.isPolygon ? (Math.asin(this.innerRadius / this.ringWidth / Math.PI / 2)) * rate : 0)
-            console.log(rate, isValue, '绘制图形')
+            // 起点
+            let Mpoint = `M${this.centerX},${this.offsetRadiusY} `
+            /***
+             * 先绘制容器，在绘制进度
+             */
+            // console.log(rate, isValue, '绘制图形')
             if (this.isPolygon) {
-                console.log('是N边形')
+                // console.log(this.sideNum, '是N边形', rate)
+                let polyPath = Mpoint
+                // 绘制裁剪区域
+                let i = 1
+                for (; i < this.sideNum && i / this.sideNum < rate; i++) {
+                    const angle = i * this.rad_a_base
+                    polyPath += `L${this.centerX + Math.sin(angle) * this.outRadius},${this.centerY - Math.cos(angle) * this.outRadius}`
+                }
+                i--
+                // js 根据百分比获取弧线上的位置
+                /***
+                 * 1. 在上下两个点中间绘制当前点
+                 * （rate在外侧边框上的位置）
+                 * 2. 绘制垂直的点（基于rate的内侧边框上的点）
+                 */
+                const startX = Math.sin(this.rad_a_base * 2)
+                const endX = Math.sin(this.rad_a_base * (i + 1))
+                const startY = Math.cos(this.rad_a_base * i)
+                const endY = Math.cos(this.rad_a_base * (i + 1))
+                const x = (rate - i / this.sideNum) * this.sideNum * (endX - startX) + startX
+                const y = (rate - i / this.sideNum) * this.sideNum * (endY - startY) + startY
+                polyPath += `L${this.centerX + x * this.outRadius},${this.centerY - y * this.outRadius + 2}`
+
+                const angle = (i + 0.5) / this.sideNum * Math.PI * 2
+                const width = Math.sin((this.sideNum - 2) / this.sideNum * Math.PI / 2) * this.ringWidth
+
+                const xA = x * this.outRadius - Math.sin(angle) * width
+                const xB = Math.sin(Math.PI * 2 * i / this.sideNum) * this.innerRadius
+                const xC = Math.sin(Math.PI * 2 * (i + 1) / this.sideNum) * this.innerRadius
+                const x2 = this.camp(xA, xB, xC)
+                
+                const yA = y * this.outRadius - Math.cos(angle) * width
+                const yB = Math.cos(Math.PI * 2 * i / this.sideNum) * this.innerRadius
+                const yC = Math.cos(Math.PI * 2 * (i + 1) / this.sideNum) * this.innerRadius
+                const y2 = this.camp(yA, yB, yC)
+                console.log(x2, y2, '折线', yA, yB, yC)
+                polyPath += `L${this.centerX + x2},${this.centerY - y2} `
+                // 绘制内部多边形
+                for (; i >=0; i--) {
+                    const angle = Math.PI * 2 * i / this.sideNum
+                    polyPath += `L${this.centerX + Math.sin(angle) * this.innerRadius},${this.centerY - Math.cos(angle) * this.innerRadius} `
+                }
+                polyPath += 'Z'
+                return polyPath
             } else {
                 let angle = rate * Math.PI * 2
-                let Mpoint = `M${this.centerX},${this.offsetRadiusY}`
                 let resultPath
                 let roundValuePath = `A${this.ringWidth * 0.5},${this.ringWidth * 0.5} 0 1,1 ${this.centerX + Math.sin(angle) * this.innerRadius},${this.centerY - this.innerRadius * Math.cos(angle)}`
                 let normalPath = `L${this.centerX + this.innerRadius * Math.sin(angle)}, ${this.centerY - this.innerRadius * Math.cos(angle)}`
