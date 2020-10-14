@@ -1,0 +1,1 @@
+/** vue-draggable-resizable配置项 */
