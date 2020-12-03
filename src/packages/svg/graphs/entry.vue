@@ -3,11 +3,11 @@
     <div class='graphs-entry-tip'>
       graphs组件
     </div>
-    <!-- <graphs
+    <graphs
       :list-data='listData'
       v-bind='config'
       class='graphs-entry-container'
-    /> -->
+    />
     <planet-chart
       :list-data='listData'
       v-bind='config'
@@ -16,7 +16,7 @@
   </div>
 </template>
 <script>
-import graphs from './test.vue'
+import graphs from './index.vue'
 import planetChart from './planet.vue'
 export default {
   name: 'graphsEntry',

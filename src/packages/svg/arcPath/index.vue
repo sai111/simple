@@ -10,9 +10,32 @@
             x="0%"
             y="0%"
             :viewBox="viewBox">
-            <line x1="0" :y1="centerY" :x2="width" :y2="centerY" stroke="#ccc" class="guide-line" />
-            <line :x1="centerX" y1="0" :x2="centerX" :y2="height" stroke="#ccc" class="guide-line" />
-            <path :d="drawPath()" stroke="red" fill="none" />
+            <line x1="0" :y1="cy" :x2="width" :y2="cy" stroke="#ccc" class="guide-line" />
+            <line :x1="cx" y1="0" :x2="cx" :y2="height" stroke="#ccc" class="guide-line" />
+            <circle :cx="cx" :cy="cy" :r="radius" stroke="null" fill="red" />
+            <path :d="drawPath(outRadius)" stroke="red" fill="transparent" />
+            <path :d="drawPath(outRadius + 200)" stroke="red" fill="transparent" />
+            <g>
+              <circle
+                v-for="(item, index) in sideNum"
+                :key="'circle-'+index"
+                :cx="cx+Math.sin(index*rad_a_base)*outRadius"
+                :cy="cy-Math.cos(index*rad_a_base)*outRadius"
+                r="30"
+                stroke="transparent"
+                fill="red"
+              />
+              <line
+                v-for="(item, index) in sideNum"
+                :key="'line-'+index"
+                :x1="cx+Math.sin(index*rad_a_base)*outRadius"
+                :y1="cy-Math.cos(index*rad_a_base)*outRadius"
+                :x2="cx+Math.sin(index*rad_a_base)*(radius3+extendLine)"
+                :y2="cy-Math.cos(index*rad_a_base)*(radius3+extendLine)"
+                stroke="green"
+                fill="transparent"
+              />
+            </g>
         </svg>
     </div>
 </template>
@@ -22,11 +45,11 @@ export default {
     props: {
         height: {
             type: Number,
-            default: 400
+            default: 1000
         },
         width: {
             type: [Number, String],
-            default: '100%'
+            default: 1000
         },
         svgReady: {
             type: Boolean,
@@ -46,26 +69,30 @@ export default {
         }
     },
     data() {
-        return {}
+        return {
+            sideNum: 5,
+            gap: 60,
+            radius: 60,
+            outRadius: 300,
+            radius3: 500,
+            extendLine: 500
+        }
     },
     computed: {
         viewBox() {
-            return `0 0 ${1200} ${this.height}`
+            return `0 0 ${this.width} ${this.height}`
         },
-        centerX() {
-            let isString = typeof (this.width) === 'string'
-            if (isString) {
-                if (this.testPercent(this.width)) {
-                    return this.toPoint(this.width) / 2 + '%'
-                } else {
-                    return Number(this.width) / 2
-                } 
-            } else {
-                return Number(this.width) / 2
-            }
+        cx() {
+            return this.width / 2
         },
-        centerY() {
+        cy() {
             return this.height / 2
+        },
+        rad_a_base() {
+            return Math.PI * 2 / this.sideNum
+        },
+        offsetRadiusY() {
+            return this.height / 2 - this.outRadius
         }
     },
     watch: {},
@@ -79,20 +106,15 @@ export default {
         toPoint(percent) {
             return percent.replace('%', '')
         },
-        drawPath() {
-            // let domEle = this.$refs.arcPath
-            // console.log(domEle, 'domEle=111')
-            // let mPoint = `M${0},${this.height - 90}`
-            // 贝兹曲线 C300,350 500,250 5600,100 700,200
-            // let cPoint = `C${0}, ${this.height - 40} ${500},${320} ${1200},${240} ${1900},${130}`
-            let resultPath
-            let domWidth = 1920
-            if (this.svgReady) {
-                let domEle = this.$refs.arcPath
-                domWidth = domEle.getBoundingClientRect().width
-                resultPath = `M${-90} ${this.height} C${domWidth / 3},${this.height / 10} ${domWidth / 4},${this.height * 4 / 3} ${domWidth},${this.height * 2 / 5}`
+        drawPath(radius) {
+            const offsetRadiusY = this.height / 2 - radius
+            let polyPath = `M${this.cx}, ${offsetRadiusY}`
+            for (let i = 0; i < this.sideNum; i++) {
+                const angle = i * this.rad_a_base
+                polyPath += `L${this.cx + Math.sin(angle) * radius},${this.cy - Math.cos(angle) * radius}`
             }
-            return `M${-90} ${this.height} C${domWidth / 3},${this.height / 10} ${domWidth / 4},${this.height * 4 / 3} ${domWidth},${this.height * 2 / 5}`
+            polyPath += 'Z'
+            return polyPath
         }
     }
 }

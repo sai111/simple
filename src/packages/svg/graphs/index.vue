@@ -51,15 +51,15 @@
         <circle :cx='cx' :cy='cy' :r='radiusArr[2]' fill='none' stroke='green' />
         <circle :cx='cx' :cy='cy' :r='radiusArr[3]' fill='none' stroke='green' />
       </g>
-      <g class='circle-li-group'>
-        <template v-for='(li, liIndex) in circleDatas'>
+      <g class="circle-li-group">
+        <template v-for="(li, liIndex) in circleDatas">
           <circle
-            :key=''circle-li-group-li-' + liIndex'
-            :cx='cx + li[2] * Math.sin(li[1])'
-            :cy='cy - li[2] * Math.cos(li[1])'
-            :r='li[0]'
-            fill='red'
-            stroke='none'
+            :key="'circle-li-group-li-' + liIndex"
+            :cx="cx + li[2] * Math.sin(li[1])"
+            :cy="cy - li[2] * Math.cos(li[1])"
+            :r="li[0]"
+            fill="red"
+            stroke="none"
           />
         </template>
       </g>
