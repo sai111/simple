@@ -21,6 +21,9 @@ module.exports = {
           '^/api': ''
         }
       }
+    },
+    before(app){
+      console.log(app, 'aooooooooo-----测试本地服务')
     }
   },
   lintOnSave: true,
